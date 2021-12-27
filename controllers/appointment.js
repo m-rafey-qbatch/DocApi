@@ -1,7 +1,7 @@
 const db = require("../models/index");
+const { Op } = db.Sequelize;
 
 exports.getAppointments = async (req, res) => {
-  const { Op } = db.Sequelize;
   const { date, doctorId, patientId, status } = req.query;
   let filtersArray = [];
   let whereObj = { [Op.and]: [filtersArray] };
@@ -17,7 +17,7 @@ exports.getAppointments = async (req, res) => {
             model: db.appointments,
             where: whereObj,
           },
-          { model: db.qualifications ,attributes:['qualification']},
+          { model: db.qualifications, attributes: ["qualification"] },
         ],
         where: { doctorId: { [Op.eq]: doctorId } },
       })
@@ -54,13 +54,26 @@ exports.getAppointments = async (req, res) => {
   }
 };
 
-exports.postAppointments = (req, res) => {
-  db.appointments
-    .create(req.body)
-    .then((response) => {
-      res.status(200).send("Appointment Added!!");
+exports.postAppointments = async (req, res) => {
+  let appointmentsPerDay = await db.appointments
+    .findAndCountAll({
+      where: {
+        [Op.and]: [
+          { doctorId: { [Op.eq]: req.body.doctorId } },
+          { date: { [Op.eq]: req.body.date } },
+        ],
+      },
     })
     .catch((err) => res.status(400).send(err));
+
+  if (appointmentsPerDay.count < 5)
+    db.appointments
+      .create(req.body)
+      .then((response) => {
+        res.status(200).send("Appointment Added!!");
+      })
+      .catch((err) => res.status(400).send(err));
+  else res.status(400).send("Slots filled");
 };
 exports.putAppointments = async (req, res) => {
   res.status(400).send("This service is not available");

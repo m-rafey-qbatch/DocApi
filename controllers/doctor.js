@@ -1,0 +1,44 @@
+const db = require("../models/index");
+
+exports.getDoctors = async(req, res) => {
+    db.doctors
+      .findAll({include:{model:db.qualifications}}) 
+      .then((response) => {
+        res.status(200).send(response);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(400);
+      });
+  }
+
+exports.postDoctors = (req, res) => {
+  db.doctors
+    .create(req.body)
+    .then((response) => {
+      res.status(200).send("Doctors Added!!");
+    })
+    .catch((err) => res.status(400).send(err));
+};
+
+exports.putDoctors = async (req, res) => {
+    res.status(400).send("This service is not available");
+};
+
+exports.patchDoctors= async (req, res) => {
+  let result = await db.doctors.findOne({
+    where: { name: req.body.name },
+  });
+  if (result) {
+    await result.update(req.body);
+    await result.save();
+    res.status(200).send("Doctor Updated!!");
+  } else {
+    db.doctors
+      .create(req.body)
+      .then((response) => {
+        res.status(200).send("Doctor Added!!");
+      })
+      .catch((err) => res.status(400).send(err));
+  }
+};

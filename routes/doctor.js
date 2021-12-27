@@ -13,5 +13,8 @@ router.get(
 router.post("/", validateRequest(addDoctor), doctorController.postDoctors);
 router.put("/", validateRequest(addDoctor), doctorController.putDoctors);
 router.patch("/", validateRequest(addDoctor), doctorController.patchDoctors);
+router.delete("/:docId", validateRequest(getDoctor), doctorController.deleteDoctors);
+
 
 module.exports = router;
+    

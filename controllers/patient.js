@@ -42,3 +42,19 @@ exports.patchPatients= async (req, res) => {
       .catch((err) => res.status(400).send(err));
   }
 };
+
+exports.deletePatients = async (req, res) => {
+  const { patId } = req.params;
+
+  await db.patients
+    .destroy({
+      where: { patientId: patId },
+    })
+    .then((response) => {
+      res.sendStatus(200)
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(400);
+    });
+};

@@ -42,3 +42,20 @@ exports.patchQualifications= async (req, res) => {
       .catch((err) => res.status(400).send(err));
   }
 };
+
+
+exports.deleteQualification = async (req, res) => {
+  const { id } = req.params;
+
+  await db.qualifications
+    .destroy({
+      where: { qualificationId: id },
+    })
+    .then((response) => {
+      res.sendStatus(200)
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(400);
+    });
+};

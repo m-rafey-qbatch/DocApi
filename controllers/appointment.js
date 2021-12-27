@@ -96,3 +96,25 @@ exports.patchAppointments = async (req, res) => {
       .catch((err) => res.status(400).send(err));
   }
 };
+
+exports.deleteAppointments = async (req, res) => {
+
+let {id} = req.params
+
+
+await db.appointments
+.destroy({
+  where: { appointmentId: id },
+})
+.then((response) => {
+  res.sendStatus(200)
+})
+.catch((err) => {
+  console.log(err);
+  res.sendStatus(400);
+});
+
+
+};
+
+

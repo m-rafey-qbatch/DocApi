@@ -27,5 +27,10 @@ router.patch(
   validateRequest(createAppointment),
   appointmentController.patchAppointments
 );
+router.delete(
+    "/:id",
+    validateRequest(getAppointment),
+    appointmentController.deleteAppointments
+  );
 
 module.exports = router;

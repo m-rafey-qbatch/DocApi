@@ -1,16 +1,16 @@
 const db = require("../models/index");
 
-exports.getDoctors = async(req, res) => {
-    db.doctors
-      .findAll({include:{model:db.qualifications}}) 
-      .then((response) => {
-        res.status(200).send(response);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.sendStatus(400);
-      });
-  }
+exports.getDoctors = async (req, res) => {
+  db.doctors
+    .findAll({ include: { model: db.qualifications } })
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(400);
+    });
+};
 
 exports.postDoctors = (req, res) => {
   db.doctors
@@ -22,10 +22,10 @@ exports.postDoctors = (req, res) => {
 };
 
 exports.putDoctors = async (req, res) => {
-    res.status(400).send("This service is not available");
+  res.status(400).send("This service is not available");
 };
 
-exports.patchDoctors= async (req, res) => {
+exports.patchDoctors = async (req, res) => {
   let result = await db.doctors.findOne({
     where: { name: req.body.name },
   });
@@ -41,4 +41,21 @@ exports.patchDoctors= async (req, res) => {
       })
       .catch((err) => res.status(400).send(err));
   }
+};
+
+exports.deleteDoctors = async (req, res) => {
+  const { docId } = req.params;
+  console.log(docId);
+
+  await db.doctors
+    .destroy({
+      where: { doctorId: docId },
+    })
+    .then((response) => {
+      res.sendStatus(200)
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(400);
+    });
 };

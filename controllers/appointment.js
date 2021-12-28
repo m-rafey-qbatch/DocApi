@@ -55,48 +55,37 @@ exports.getAppointments = async (req, res) => {
 };
 
 exports.postAppointments = async (req, res) => {
-  let appointmentsPerDay = await db.appointments
+  db.appointments
+    .create(req.body)
+    .then((response) => {
+      res.status(200).send("Appointment Added!!");
+    })
+    .catch((err) => {
+      res.status(205).send(err);
+    });
+};
+exports.putAppointments = async (req, res) => {
+  let result = await db.appointments
     .findAndCountAll({
       where: {
         [Op.and]: [
           { doctorId: { [Op.eq]: req.body.doctorId } },
+          { patientId: { [Op.eq]: req.body.patientId } },
+          { status: { [Op.eq]: req.body.status } },
           { date: { [Op.eq]: req.body.date } },
         ],
       },
     })
     .catch((err) => res.status(400).send(err));
 
-  if (appointmentsPerDay.count < 5)
+  if (result.count == 0)
     db.appointments
       .create(req.body)
       .then((response) => {
         res.status(200).send("Appointment Added!!");
       })
-      .catch((err) => res.status(400).send(err));
-  else res.status(400).send("Slots filled");
-};
-exports.putAppointments = async (req, res) => {
-  let result = await db.appointments
-  .findAndCountAll({
-    where: {
-      [Op.and]: [
-        { doctorId: { [Op.eq]: req.body.doctorId } },
-        { patientId: { [Op.eq]: req.body.patientId } },
-        { status: { [Op.eq]: req.body.status } },
-        { date: { [Op.eq]: req.body.date } },
-      ],
-    },
-  })
-  .catch((err) => res.status(400).send(err));
-
-if (result.count == 0 )
-  db.appointments
-    .create(req.body)
-    .then((response) => {
-      res.status(200).send("Appointment Added!!");
-    })
-    .catch((err) => res.status(400).send(err));
-else res.status(400).send("Appointment Already added");
+      .catch((err) => res.status(205).send(err));
+  else res.status(400).send("Appointment Already added");
 };
 
 exports.patchAppointments = async (req, res) => {
@@ -118,23 +107,17 @@ exports.patchAppointments = async (req, res) => {
 };
 
 exports.deleteAppointments = async (req, res) => {
+  let { id } = req.params;
 
-let {id} = req.params
-
-
-await db.appointments
-.destroy({
-  where: { appointmentId: id },
-})
-.then((response) => {
-  res.sendStatus(200)
-})
-.catch((err) => {
-  console.log(err);
-  res.sendStatus(400);
-});
-
-
+  await db.appointments
+    .destroy({
+      where: { appointmentId: id },
+    })
+    .then((response) => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(400);
+    });
 };
-
-

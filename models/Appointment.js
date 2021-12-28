@@ -41,5 +41,21 @@ module.exports = (sequelize, DataTypes) => {
     Appointment.belongsTo(models.patients, { foreignKey: "patientId" });
   };
 
+  const Sequelize = require("sequelize");
+  const { Op } = Sequelize;
+
+  Appointment.addHook("beforeCreate", async (appoint, options) => {
+    let result = await Appointment.findAndCountAll({
+      where: {
+        [Op.and]: [
+          { doctorId: { [Op.eq]: appoint.doctorId } },
+          { date: { [Op.eq]: appoint.date } },
+        ],
+      },
+    }).catch((err) =>  Promise.reject(err));
+    if (result.count >= 5)
+      return Promise.reject("Slots Fulfilled!");
+  });
+
   return Appointment;
 };

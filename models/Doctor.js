@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         Doctor.hasMany(models.qualifications,{foreignKey:'doctorId'})
       }
    
+      
     return Doctor;
   };
   

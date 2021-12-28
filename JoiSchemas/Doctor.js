@@ -3,6 +3,7 @@ const Joi = require("joi");
 const addDoctor = Joi.object({
   name: Joi.string().required(),
   age: Joi.number().required(),
+  email: Joi.string().email().required(),
 
 });
 

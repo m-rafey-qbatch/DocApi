@@ -1,4 +1,5 @@
 const db = require("../models/index");
+const { Op } = db.Sequelize;
 
 exports.getDoctors = async (req, res) => {
   db.doctors
@@ -12,17 +13,32 @@ exports.getDoctors = async (req, res) => {
     });
 };
 
-exports.postDoctors = (req, res) => {
+exports.postDoctors = async (req, res) => {
+  let result = await db.doctors
+    .findAndCountAll({
+      where: {
+        email: { [Op.eq]: req.body.email },
+      },
+    })
+    .catch((err) => res.status(400).send(err));
+console.log(result)
+  if (result.count == 0)
+    db.doctors
+      .create(req.body)
+      .then((response) => {
+        res.status(200).send(" Doctor Added!!");
+      })
+      .catch((err) => res.status(400).send(err));
+  else res.status(200).send("Doctor Already Exists!!");
+};
+
+exports.putDoctors = async (req, res) => {
   db.doctors
     .create(req.body)
     .then((response) => {
       res.status(200).send("Doctors Added!!");
     })
     .catch((err) => res.status(400).send(err));
-};
-
-exports.putDoctors = async (req, res) => {
-  res.status(400).send("This service is not available");
 };
 
 exports.patchDoctors = async (req, res) => {
@@ -52,7 +68,7 @@ exports.deleteDoctors = async (req, res) => {
       where: { doctorId: docId },
     })
     .then((response) => {
-      res.sendStatus(200)
+      res.sendStatus(200);
     })
     .catch((err) => {
       console.log(err);

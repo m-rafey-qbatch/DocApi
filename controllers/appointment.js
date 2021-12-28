@@ -76,7 +76,27 @@ exports.postAppointments = async (req, res) => {
   else res.status(400).send("Slots filled");
 };
 exports.putAppointments = async (req, res) => {
-  res.status(400).send("This service is not available");
+  let result = await db.appointments
+  .findAndCountAll({
+    where: {
+      [Op.and]: [
+        { doctorId: { [Op.eq]: req.body.doctorId } },
+        { patientId: { [Op.eq]: req.body.patientId } },
+        { status: { [Op.eq]: req.body.status } },
+        { date: { [Op.eq]: req.body.date } },
+      ],
+    },
+  })
+  .catch((err) => res.status(400).send(err));
+
+if (result.count == 0 )
+  db.appointments
+    .create(req.body)
+    .then((response) => {
+      res.status(200).send("Appointment Added!!");
+    })
+    .catch((err) => res.status(400).send(err));
+else res.status(400).send("Appointment Already added");
 };
 
 exports.patchAppointments = async (req, res) => {

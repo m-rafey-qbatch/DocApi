@@ -3,7 +3,7 @@ const Joi = require("joi");
 const createAppointment = Joi.object({
   patientId: Joi.number().integer(),
   doctorId: Joi.number().integer(),
-  date: Joi.string().required(),
+  date: Joi.date(),
   status: Joi.string().required(),
 
 });

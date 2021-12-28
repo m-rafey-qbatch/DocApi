@@ -2,9 +2,9 @@ const Joi = require("joi");
 
 const addPatient = Joi.object({
   name: Joi.string().required(),
+  phoneNo: Joi.number().required(),
   age: Joi.number().required(),
   gender: Joi.string().required(),
-
 
 });
 

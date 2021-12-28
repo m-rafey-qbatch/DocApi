@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       age: {
         type: DataTypes.INTEGER,
       },
+      phoneNo: {
+        type: DataTypes.STRING,
+        required:true,
+      },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
     });

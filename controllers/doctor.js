@@ -13,7 +13,7 @@ exports.getDoctors = async (req, res) => {
     });
 };
 
-exports.postDoctors = async (req, res) => {
+exports.putDoctors = async (req, res) => {
   let result = await db.doctors
     .findAndCountAll({
       where: {
@@ -21,7 +21,6 @@ exports.postDoctors = async (req, res) => {
       },
     })
     .catch((err) => res.status(400).send(err));
-console.log(result)
   if (result.count == 0)
     db.doctors
       .create(req.body)
@@ -32,11 +31,11 @@ console.log(result)
   else res.status(200).send("Doctor Already Exists!!");
 };
 
-exports.putDoctors = async (req, res) => {
+exports.postDoctors = async (req, res) => {
   db.doctors
     .create(req.body)
     .then((response) => {
-      res.status(200).send("Doctors Added!!");
+      res.status(200).send("Doctor Added!!");
     })
     .catch((err) => res.status(400).send(err));
 };

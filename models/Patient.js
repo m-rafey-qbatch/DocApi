@@ -1,33 +1,43 @@
+const Sequelize = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
-    const Patient = sequelize.define("patients", {
-      patientId: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      name: {
-        type: DataTypes.STRING,
-        required:true,
-      },
-      gender: {
-        type: DataTypes.STRING,
-      },
-      age: {
-        type: DataTypes.INTEGER,
-      },
-      phoneNo: {
-        type: DataTypes.STRING,
-        required:true,
-      },
-      createdAt: DataTypes.DATE,
-      updatedAt: DataTypes.DATE,
-    });
-  
- 
-    Patient.associate = (models)=>{
-        Patient.hasMany(models.appointments,{foreignKey:'patientId'})
-      }
-  
-    return Patient;
+  const Patient = sequelize.define("patients", {
+    patientId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      required: true,
+    },
+    gender: {
+      type: DataTypes.STRING,
+    },
+    age: {
+      type: DataTypes.INTEGER,
+    },
+    phoneNo: {
+      type: DataTypes.STRING,
+      required: true,
+    },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
+  });
+
+  Patient.associate = (models) => {
+    Patient.hasMany(models.appointments, { foreignKey: "patientId" });
   };
-  
+
+  const { Op } = Sequelize;
+  Patient.addHook("beforeCreate", async (patient, options) => {
+    let result = await Patient.findAndCountAll({
+      where: {
+        phoneNo: { [Op.eq]: patient.phoneNo },
+      },
+    }).catch((err) => Promise.reject(err));
+    if (result.count != 0) return Promise.reject("Patient Already Exists!");
+  });
+
+  return Patient;
+};

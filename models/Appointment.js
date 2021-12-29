@@ -1,3 +1,4 @@
+const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   const Appointment = sequelize.define("appointments", {
     appointmentId: {
@@ -41,9 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     Appointment.belongsTo(models.patients, { foreignKey: "patientId" });
   };
 
-  const Sequelize = require("sequelize");
   const { Op } = Sequelize;
-
   Appointment.addHook("beforeCreate", async (appoint, options) => {
     let result = await Appointment.findAndCountAll({
       where: {

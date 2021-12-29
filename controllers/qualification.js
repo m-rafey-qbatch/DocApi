@@ -1,9 +1,18 @@
 const db = require("../models/index");
-const { Op } = db.Sequelize;
 
 exports.getQualifications = async (req, res) => {
+  let pageNo = 0;
+  let pageLength = 10;
+  const { perPage, page } = req.query;
+
+  if (perPage) pageLength = perPage;
+  if (page) pageNo = page;
+
   db.qualifications
-    .findAll()
+    .findAndCountAll({
+      limit: pageLength,
+      offset: pageLength * pageNo,
+    })
     .then((response) => {
       res.status(200).send(response);
     })
@@ -16,7 +25,7 @@ exports.getQualifications = async (req, res) => {
 exports.postQualifications = (req, res) => {
   db.qualifications
     .create(req.body)
-    .then((response) => {
+    .then(() => {
       res.status(200).send("Qualification Added!!");
     })
     .catch((err) => res.status(400).send(err));
@@ -26,10 +35,8 @@ exports.putQualifications = async (req, res) => {
   let result = await db.qualifications
     .findAndCountAll({
       where: {
-        [Op.and]: [
-          { doctorId: { [Op.eq]: req.body.doctorId } },
-          { qualification: { [Op.eq]: req.body.qualification } },
-        ],
+        doctorId: req.body.doctorId,
+        qualification: req.body.qualification,
       },
     })
     .catch((err) => res.status(400).send(err));
@@ -37,7 +44,7 @@ exports.putQualifications = async (req, res) => {
   if (result.count == 0)
     db.qualifications
       .create(req.body)
-      .then((response) => {
+      .then(() => {
         res.status(200).send(" Qualification Added!!");
       })
       .catch((err) => res.status(400).send(err));
@@ -55,7 +62,7 @@ exports.patchQualifications = async (req, res) => {
   } else {
     db.qualifications
       .create(req.body)
-      .then((response) => {
+      .then(() => {
         res.status(200).send("Qualification Added!!");
       })
       .catch((err) => res.status(400).send(err));
@@ -64,12 +71,11 @@ exports.patchQualifications = async (req, res) => {
 
 exports.deleteQualification = async (req, res) => {
   const { id } = req.params;
-
   await db.qualifications
     .destroy({
       where: { qualificationId: id },
     })
-    .then((response) => {
+    .then(() => {
       res.sendStatus(200);
     })
     .catch((err) => {

@@ -1,27 +1,35 @@
 const db = require("../models/index");
 
-exports.getPatients = async(req, res) => {
-    db.patients
-      .findAll() 
-      .then((response) => {
-        res.status(200).send(response);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.sendStatus(400);
-      });
-  }
+exports.getPatients = async (req, res) => {
+  let pageNo = 0;
+  let pageLength = 5;
+  const { perPage, page } = req.query;
+
+  if (perPage) pageLength = perPage;
+  if (page) pageNo = page;
+
+  db.patients
+    .findAndCountAll({
+      limit: pageLength,
+      offset: pageLength * pageNo,
+    })
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(400);
+    });
+};
 
 exports.addPatient = (req, res) => {
   db.patients
     .create(req.body)
-    .then((response) => {
+    .then(() => {
       res.status(200).send("Patient Added!!");
     })
     .catch((err) => res.status(400).send(err));
 };
-
-
 
 exports.updatePatient = async (req, res) => {
   let result = await db.patients.findOne({
@@ -49,7 +57,7 @@ exports.deletePatient = async (req, res) => {
       where: { patientId: patId },
     })
     .then((response) => {
-      res.sendStatus(200)
+      res.sendStatus(200);
     })
     .catch((err) => {
       console.log(err);

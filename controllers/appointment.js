@@ -1,17 +1,21 @@
 const db = require("../models/index");
-const { Op } = db.Sequelize;
-
 exports.getAppointments = async (req, res) => {
-  const { date, doctorId, patientId, status } = req.query;
-  let filtersArray = [];
-  let whereObj = { [Op.and]: [filtersArray] };
+  let whereObj = {};
+  let pageNo = 0;
+  let pageLength = 5;
 
-  if (date) filtersArray.push({ date: { [Op.eq]: date } });
-  if (status) filtersArray.push({ status: { [Op.eq]: status } });
+  const { date, doctorId, patientId, status, perPage, page } = req.query;
+
+
+  if (perPage) pageLength = perPage;
+  if (page) pageNo = page;
+  if (date) whereObj.push({ date: date });
+  if (status) whereObj.push({ status: status });
 
   if (doctorId) {
     db.doctors
-      .findAll({
+      .findAndCountAll({
+        where: whereObj,
         include: [
           {
             model: db.appointments,
@@ -19,7 +23,7 @@ exports.getAppointments = async (req, res) => {
           },
           { model: db.qualifications, attributes: ["qualification"] },
         ],
-        where: { doctorId: { [Op.eq]: doctorId } },
+        where: { doctorId: doctorId },
       })
       .then((response) => {
         res.status(200).send(response);
@@ -30,9 +34,11 @@ exports.getAppointments = async (req, res) => {
       });
   } else if (patientId) {
     db.patients
-      .findAll({
+      .findAndCountAll({
+   
+        offset: pageLength * pageNo,
         include: { model: db.appointments, where: whereObj },
-        where: { patientId: { [Op.eq]: patientId } },
+        where: { patientId: patientId },
       })
       .then((response) => {
         res.status(200).send(response);
@@ -43,7 +49,11 @@ exports.getAppointments = async (req, res) => {
       });
   } else {
     db.appointments
-      .findAll({ where: whereObj })
+      .findAndCountAll({
+        where: whereObj,
+        limit: pageLength,
+        offset: pageLength * pageNo,
+      })
       .then((response) => {
         res.status(200).send(response);
       })
@@ -81,9 +91,7 @@ exports.editAppointment = async (req, res) => {
       })
       .catch((err) => res.status(400).send(err));
   }
-
 };
-
 
 exports.deleteAppointment = async (req, res) => {
   let { id } = req.params;

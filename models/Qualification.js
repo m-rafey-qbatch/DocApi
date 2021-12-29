@@ -1,4 +1,3 @@
-const Sequelize = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   const Qualification = sequelize.define("qualifications", {
@@ -27,7 +26,6 @@ module.exports = (sequelize, DataTypes) => {
     Qualification.belongsTo(models.doctors, { foreignKey: "doctorId" });
   };
 
-  const { Op } = Sequelize;
   Qualification.addHook("beforeCreate", async (qua, options) => {
     let result = await Qualification.findAndCountAll({
       where: {

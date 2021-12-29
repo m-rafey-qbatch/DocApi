@@ -1,9 +1,21 @@
 const db = require("../models/index");
-const { Op } = db.Sequelize;
 
 exports.getDoctors = async (req, res) => {
+
+  let pageNo = 0;
+  let pageLength = 5;
+  const { perPage, page } = req.query;
+
+  if (perPage) pageLength = perPage;
+  if (page) pageNo = page;
+
+
   db.doctors
-    .findAll({ include: { model: db.qualifications } })
+    .findAndCountAll({
+      limit: pageLength,
+      offset: pageLength * pageNo,
+      include: { model: db.qualifications },
+    })
     .then((response) => {
       res.status(200).send(response);
     })
@@ -29,19 +41,16 @@ exports.editDoctor = async (req, res) => {
       })
       .catch((err) => res.status(400).send(err));
   }
-
 };
 
 exports.addDoctor = async (req, res) => {
   db.doctors
     .create(req.body)
-    .then((response) => {
+    .then(() => {
       res.status(200).send("Doctor Added!!");
     })
     .catch((err) => res.status(400).send(err));
 };
-
-
 
 exports.deleteDoctor = async (req, res) => {
   const { docId } = req.params;

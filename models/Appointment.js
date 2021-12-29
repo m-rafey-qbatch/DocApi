@@ -1,4 +1,3 @@
-const Sequelize = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   const Appointment = sequelize.define("appointments", {
     appointmentId: {
@@ -42,18 +41,14 @@ module.exports = (sequelize, DataTypes) => {
     Appointment.belongsTo(models.patients, { foreignKey: "patientId" });
   };
 
-  const { Op } = Sequelize;
-  Appointment.addHook("beforeCreate", async (appoint, options) => {
+  Appointment.addHook("beforeCreate", async (appoint) => {
     let result = await Appointment.findAndCountAll({
       where: {
-        [Op.and]: [
-          { doctorId: { [Op.eq]: appoint.doctorId } },
-          { date: { [Op.eq]: appoint.date } },
-        ],
+        doctorId: appoint.doctorId,
+        date: appoint.date,
       },
-    }).catch((err) =>  Promise.reject(err));
-    if (result.count >= 5)
-      return Promise.reject("Slots Fulfilled!");
+    }).catch((err) => Promise.reject(err));
+    if (result.count >= 5) return Promise.reject("Slots Fulfilled!");
   });
 
   return Appointment;

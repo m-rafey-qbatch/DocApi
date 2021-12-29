@@ -1,5 +1,3 @@
-const Sequelize = require("sequelize");
-
 module.exports = (sequelize, DataTypes) => {
   const Patient = sequelize.define("patients", {
     patientId: {
@@ -29,11 +27,10 @@ module.exports = (sequelize, DataTypes) => {
     Patient.hasMany(models.appointments, { foreignKey: "patientId" });
   };
 
-  const { Op } = Sequelize;
-  Patient.addHook("beforeCreate", async (patient, options) => {
+  Patient.addHook("beforeCreate", async (patient) => {
     let result = await Patient.findAndCountAll({
       where: {
-        phoneNo: { [Op.eq]: patient.phoneNo },
+        phoneNo: patient.phoneNo,
       },
     }).catch((err) => Promise.reject(err));
     if (result.count != 0) return Promise.reject("Patient Already Exists!");

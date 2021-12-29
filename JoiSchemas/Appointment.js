@@ -12,6 +12,9 @@ const getAppointment = Joi.object({
   doctorId: Joi.number().integer().optional(),
   date: Joi.date().optional(),
   status: Joi.string().optional(),
+  perPage: Joi.number().optional(),
+  page: Joi.number().optional(),
+
 });
 
 const updateAppointment = Joi.object({

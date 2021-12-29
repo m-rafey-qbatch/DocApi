@@ -1,8 +1,8 @@
 const Joi = require("joi");
 
 const addDoctor = Joi.object({
-  name: Joi.string().required(),
-  age: Joi.number().required(),
+  name: Joi.string().length(50).required(),
+  age: Joi.number().min(18).max(110).required(),
   email: Joi.string().email().required(),
 
 });

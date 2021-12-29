@@ -26,7 +26,7 @@ exports.getAppointments = async (req, res) => {
         where: { doctorId: doctorId },
       })
       .then((response) => {
-        res.status(200).send(response);
+        res.status(200).send({ success: true, appointments: response });
       })
       .catch((err) => {
         console.log(err);
@@ -41,7 +41,7 @@ exports.getAppointments = async (req, res) => {
         where: { patientId: patientId },
       })
       .then((response) => {
-        res.status(200).send(response);
+        res.status(200).send({ success: true, appointments: response });
       })
       .catch((err) => {
         console.log(err);
@@ -55,7 +55,7 @@ exports.getAppointments = async (req, res) => {
         offset: pageLength * pageNo,
       })
       .then((response) => {
-        res.status(200).send(response);
+        res.status(200).send({ success: true, appointments: response });
       })
       .catch((err) => {
         console.log(err);

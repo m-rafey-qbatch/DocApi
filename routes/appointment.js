@@ -5,6 +5,7 @@ const { validateRequest } = require("../middleware/RequestVlidations");
 const {
   getAppointment,
   createAppointment,
+  updateAppointment
 } = require("../JoiSchemas/Appointment");
 
 router.get(
@@ -15,22 +16,18 @@ router.get(
 router.post(
   "/",
   validateRequest(createAppointment),
-  appointmentController.postAppointments
+  appointmentController.createAppointment
 );
 router.put(
   "/",
-  validateRequest(createAppointment),
-  appointmentController.putAppointments
+  validateRequest(updateAppointment),
+  appointmentController.editAppointment
 );
-router.patch(
-  "/",
-  validateRequest(createAppointment),
-  appointmentController.patchAppointments
-);
+
 router.delete(
     "/:id",
     validateRequest(getAppointment),
-    appointmentController.deleteAppointments
+    appointmentController.deleteAppointment
   );
 
 module.exports = router;

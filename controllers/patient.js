@@ -12,7 +12,7 @@ exports.getPatients = async(req, res) => {
       });
   }
 
-exports.postPatients = (req, res) => {
+exports.addPatient = (req, res) => {
   db.patients
     .create(req.body)
     .then((response) => {
@@ -21,27 +21,11 @@ exports.postPatients = (req, res) => {
     .catch((err) => res.status(400).send(err));
 };
 
-exports.putPatients = async (req, res) => {
-  let result = await db.patients
-  .findAndCountAll({
-    where: {
-      phoneNo: { [Op.eq]: req.body.phoneNo },
-    },
-  })
-  .catch((err) => res.status(400).send(err));
-if (result.count == 0)
-  db.patients
-    .create(req.body)
-    .then((response) => {
-      res.status(200).send(" Patient Added!!");
-    })
-    .catch((err) => res.status(400).send(err));
-else res.status(200).send("Patient Already Exists!!");
-};
 
-exports.patchPatients= async (req, res) => {
+
+exports.updatePatient = async (req, res) => {
   let result = await db.patients.findOne({
-    where: { name: req.body.name },
+    where: { phoneNo: req.body.phoneNo },
   });
   if (result) {
     await result.update(req.body);
@@ -50,14 +34,14 @@ exports.patchPatients= async (req, res) => {
   } else {
     db.patients
       .create(req.body)
-      .then((response) => {
+      .then(() => {
         res.status(200).send("Patient Added!!");
       })
       .catch((err) => res.status(400).send(err));
   }
 };
 
-exports.deletePatients = async (req, res) => {
+exports.deletePatient = async (req, res) => {
   const { patId } = req.params;
 
   await db.patients

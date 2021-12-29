@@ -1,26 +1,37 @@
 const Sequelize = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  const Doctor = sequelize.define("doctors", {
-    doctorId: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  const Doctor = sequelize.define(
+    "doctors",
+    {
+      doctorId: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+        required: true,
+      },
+      email: {
+        type: DataTypes.STRING,
+        required: true,
+      },
+      age: {
+        type: DataTypes.INTEGER,
+      },
+      createdAt: DataTypes.DATE,
+      updatedAt: DataTypes.DATE,
     },
-    name: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    email: {
-      type: DataTypes.STRING,
-      required: true,
-    },
-    age: {
-      type: DataTypes.INTEGER,
-    },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
-  });
+    {
+      indexes: [
+        {
+          unique: false,
+          fields: ["email"],
+        },
+      ],
+    }
+  );
 
   Doctor.associate = (models) => {
     Doctor.hasMany(models.appointments, { foreignKey: "doctorId" });

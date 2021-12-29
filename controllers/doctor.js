@@ -13,40 +13,13 @@ exports.getDoctors = async (req, res) => {
     });
 };
 
-exports.putDoctors = async (req, res) => {
-  let result = await db.doctors
-    .findAndCountAll({
-      where: {
-        email: { [Op.eq]: req.body.email },
-      },
-    })
-    .catch((err) => res.status(400).send(err));
-  if (result.count == 0)
-    db.doctors
-      .create(req.body)
-      .then((response) => {
-        res.status(200).send(" Doctor Added!!");
-      })
-      .catch((err) => res.status(400).send(err));
-  else res.status(200).send("Doctor Already Exists!!");
-};
-
-exports.postDoctors = async (req, res) => {
-  db.doctors
-    .create(req.body)
-    .then((response) => {
-      res.status(200).send("Doctor Added!!");
-    })
-    .catch((err) => res.status(400).send(err));
-};
-
-exports.patchDoctors = async (req, res) => {
+exports.editDoctor = async (req, res) => {
   let result = await db.doctors.findOne({
-    where: { name: req.body.name },
+    where: { email: req.body.email },
   });
   if (result) {
-    await result.update(req.body);
-    await result.save();
+    result.update(req.body);
+    result.save();
     res.status(200).send("Doctor Updated!!");
   } else {
     db.doctors
@@ -56,9 +29,21 @@ exports.patchDoctors = async (req, res) => {
       })
       .catch((err) => res.status(400).send(err));
   }
+
 };
 
-exports.deleteDoctors = async (req, res) => {
+exports.addDoctor = async (req, res) => {
+  db.doctors
+    .create(req.body)
+    .then((response) => {
+      res.status(200).send("Doctor Added!!");
+    })
+    .catch((err) => res.status(400).send(err));
+};
+
+
+
+exports.deleteDoctor = async (req, res) => {
   const { docId } = req.params;
   console.log(docId);
 

@@ -9,9 +9,8 @@ router.get(
   validateRequest(getPatient, "query"),
   patientController.getPatients
 );
-router.post("/", validateRequest(addPatient), patientController.postPatients);
-router.put("/", validateRequest(addPatient), patientController.putPatients);
-router.patch("/", validateRequest(addPatient), patientController.patchPatients);
-router.delete("/:patId", validateRequest(getPatient), patientController.deletePatients);
+router.post("/", validateRequest(addPatient), patientController.addPatient);
+router.put("/", validateRequest(addPatient), patientController.updatePatient);
+router.delete("/:patId", validateRequest(getPatient), patientController.deletePatient);
 
 module.exports = router;

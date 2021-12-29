@@ -54,7 +54,7 @@ exports.getAppointments = async (req, res) => {
   }
 };
 
-exports.postAppointments = async (req, res) => {
+exports.createAppointment = async (req, res) => {
   db.appointments
     .create(req.body)
     .then((response) => {
@@ -64,37 +64,14 @@ exports.postAppointments = async (req, res) => {
       res.status(205).send(err);
     });
 };
-exports.putAppointments = async (req, res) => {
-  let result = await db.appointments
-    .findAndCountAll({
-      where: {
-        [Op.and]: [
-          { doctorId: { [Op.eq]: req.body.doctorId } },
-          { patientId: { [Op.eq]: req.body.patientId } },
-          { status: { [Op.eq]: req.body.status } },
-          { date: { [Op.eq]: req.body.date } },
-        ],
-      },
-    })
-    .catch((err) => res.status(400).send(err));
 
-  if (result.count == 0)
-    db.appointments
-      .create(req.body)
-      .then((response) => {
-        res.status(200).send("Appointment Added!!");
-      })
-      .catch((err) => res.status(205).send(err));
-  else res.status(400).send("Appointment Already added");
-};
-
-exports.patchAppointments = async (req, res) => {
+exports.editAppointment = async (req, res) => {
   let result = await db.appointments.findOne({
     where: { appointmentId: req.body.appointmentId },
   });
   if (result) {
-    await result.update(req.body);
-    await result.save();
+    result.update(req.body);
+    result.save();
     res.status(200).send("Appointment Updated!!");
   } else {
     db.appointments
@@ -104,9 +81,11 @@ exports.patchAppointments = async (req, res) => {
       })
       .catch((err) => res.status(400).send(err));
   }
+
 };
 
-exports.deleteAppointments = async (req, res) => {
+
+exports.deleteAppointment = async (req, res) => {
   let { id } = req.params;
 
   await db.appointments

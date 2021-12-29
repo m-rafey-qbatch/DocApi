@@ -3,7 +3,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
   queryInterface.addColumn("patients","phoneNo",{
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(20),
     unique: true,
    
     })

@@ -9,7 +9,7 @@ module.exports = {
         autoIncrement: true
       },
       qualification: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         allowNull: false,
       },
       doctorId:{

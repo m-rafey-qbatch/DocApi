@@ -1,6 +1,5 @@
 const Sequelize = require("sequelize");
 
-
 module.exports = (sequelize, DataTypes) => {
   const Qualification = sequelize.define("qualifications", {
     qualificationId: {
@@ -28,18 +27,16 @@ module.exports = (sequelize, DataTypes) => {
     Qualification.belongsTo(models.doctors, { foreignKey: "doctorId" });
   };
 
-
-
-
-
   const { Op } = Sequelize;
   Qualification.addHook("beforeCreate", async (qua, options) => {
     let result = await Qualification.findAndCountAll({
       where: {
-        qualification: { [Op.eq]: qua.qualification },
+        qualification: qua.qualification,
+        doctorId: qua.doctorId,
       },
     }).catch((err) => Promise.reject(err));
-    if (result.count != 0) return Promise.reject("Qualification Already Exists!");
+    if (result.count != 0)
+      return Promise.reject("Qualification Already Exists!");
   });
   return Qualification;
 };

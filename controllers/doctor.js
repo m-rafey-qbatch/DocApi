@@ -1,14 +1,12 @@
 const db = require("../models/index");
 
 exports.getDoctors = async (req, res) => {
-
   let pageNo = 0;
   let pageLength = 5;
   const { perPage, page } = req.query;
 
   if (perPage) pageLength = perPage;
   if (page) pageNo = page;
-
 
   db.doctors
     .findAndCountAll({
@@ -21,7 +19,7 @@ exports.getDoctors = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.sendStatus(400);
+      res.status(400).send({ success: false, message: err });
     });
 };
 
@@ -39,7 +37,7 @@ exports.editDoctor = async (req, res) => {
       .then((response) => {
         res.status(200).send("Doctor Added!!");
       })
-      .catch((err) => res.status(400).send(err));
+      .catch((err) => res.status(400).send({ success: false, message: err }));
   }
 };
 
@@ -49,7 +47,10 @@ exports.addDoctor = async (req, res) => {
     .then(() => {
       res.status(200).send("Doctor Added!!");
     })
-    .catch((err) => res.status(400).send(err));
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send({ success: false, message: err });
+    });
 };
 
 exports.deleteDoctor = async (req, res) => {
@@ -65,6 +66,6 @@ exports.deleteDoctor = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.sendStatus(400);
+      res.status(400).send({ success: false, message: err });
     });
 };

@@ -19,8 +19,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       required: true,
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull:false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull:false,
+    },
   });
 
   Patient.associate = (models) => {

@@ -32,8 +32,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "CASCADE",
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull:false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull:false,
+    },
   });
 
   Appointment.associate = (models) => {

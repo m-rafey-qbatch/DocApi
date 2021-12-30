@@ -6,7 +6,6 @@ exports.getAppointments = async (req, res) => {
 
   const { date, doctorId, patientId, status, perPage, page } = req.query;
 
-
   if (perPage) pageLength = perPage;
   if (page) pageNo = page;
   if (date) whereObj.push({ date: date });
@@ -30,12 +29,11 @@ exports.getAppointments = async (req, res) => {
       })
       .catch((err) => {
         console.log(err);
-        res.sendStatus(400);
+        res.status(400).send({ success: false, message: err });
       });
   } else if (patientId) {
     db.patients
       .findAndCountAll({
-   
         offset: pageLength * pageNo,
         include: { model: db.appointments, where: whereObj },
         where: { patientId: patientId },
@@ -45,7 +43,7 @@ exports.getAppointments = async (req, res) => {
       })
       .catch((err) => {
         console.log(err);
-        res.sendStatus(400);
+        res.status(400).send({ success: false, message: err });
       });
   } else {
     db.appointments
@@ -59,7 +57,7 @@ exports.getAppointments = async (req, res) => {
       })
       .catch((err) => {
         console.log(err);
-        res.sendStatus(400);
+        res.status(400).send({ success: false, message: err });
       });
   }
 };
@@ -89,7 +87,10 @@ exports.editAppointment = async (req, res) => {
       .then((response) => {
         res.status(200).send("Appointment Added!!");
       })
-      .catch((err) => res.status(400).send(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).send({ success: false, message: err });
+      });
   }
 };
 
@@ -105,6 +106,6 @@ exports.deleteAppointment = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.sendStatus(400);
+      res.status(400).send({ success: false, message: err });
     });
 };

@@ -18,7 +18,7 @@ exports.getQualifications = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.sendStatus(400);
+      res.status(400).send({ success: false, message: err });
     });
 };
 
@@ -28,7 +28,10 @@ exports.postQualifications = (req, res) => {
     .then(() => {
       res.status(200).send("Qualification Added!!");
     })
-    .catch((err) => res.status(400).send(err));
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send({ success: false, message: err });
+    });
 };
 
 exports.putQualifications = async (req, res) => {
@@ -39,7 +42,10 @@ exports.putQualifications = async (req, res) => {
         qualification: req.body.qualification,
       },
     })
-    .catch((err) => res.status(400).send(err));
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send({ success: false, message: err });
+    });
 
   if (result.count == 0)
     db.qualifications
@@ -47,7 +53,10 @@ exports.putQualifications = async (req, res) => {
       .then(() => {
         res.status(200).send(" Qualification Added!!");
       })
-      .catch((err) => res.status(400).send(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).send({ success: false, message: err });
+      });
   else res.status(200).send("Data Already Added");
 };
 
@@ -65,7 +74,10 @@ exports.patchQualifications = async (req, res) => {
       .then(() => {
         res.status(200).send("Qualification Added!!");
       })
-      .catch((err) => res.status(400).send(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).send({ success: false, message: err });
+      });
   }
 };
 
@@ -80,6 +92,6 @@ exports.deleteQualification = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.sendStatus(400);
+      res.status(400).send({ success: false, message: err })
     });
 };

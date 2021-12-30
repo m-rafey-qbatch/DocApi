@@ -24,7 +24,7 @@ exports.getAppointments = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ success: false, message: err });
+      res.status(400).send({ success: false, message: err.message });
     });
 };
 
@@ -35,7 +35,8 @@ exports.createAppointment = async (req, res) => {
       res.status(200).send("Appointment Added!!");
     })
     .catch((err) => {
-      res.status(205).send(err);
+      console.log(err)
+      res.status(205).send(err.message);
     });
 };
 
@@ -55,7 +56,7 @@ exports.editAppointment = async (req, res) => {
       })
       .catch((err) => {
         console.log(err);
-        res.status(400).send({ success: false, message: err });
+        res.status(400).send({ success: false, message: err.message });
       });
   }
 };
@@ -72,6 +73,6 @@ exports.deleteAppointment = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ success: false, message: err });
+      res.status(400).send({ success: false, message: err.message });
     });
 };

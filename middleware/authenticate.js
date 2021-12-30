@@ -1,5 +1,4 @@
 const auth = (req, res, next) => {
-  console.log("User Authenticated");
   if (req.headers.authorization != null) {
     const base64Credentials = req.headers.authorization.split(" ")[1];
     const [user, pass] = Buffer.from(base64Credentials, "base64")

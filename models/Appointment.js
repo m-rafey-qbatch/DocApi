@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
         date: appoint.date,
       },
     }).catch((err) => Promise.reject(err));
-    if (result.count >= 5) return Promise.reject("Slots Fulfilled!");
+    if (result.count >= 5) return Promise.reject(new Error ("Slots Fulfilled!"));
   });
 
   return Appointment;

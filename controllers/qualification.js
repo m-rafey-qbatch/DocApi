@@ -18,7 +18,7 @@ exports.getQualifications = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ success: false, message: err });
+      res.status(400).send({ success: false, message: err.message });
     });
 };
 
@@ -30,35 +30,11 @@ exports.postQualifications = (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ success: false, message: err });
+      res.status(400).send({ success: false, message: err.message });
     });
 };
 
-exports.putQualifications = async (req, res) => {
-  let result = await db.qualifications
-    .findAndCountAll({
-      where: {
-        doctorId: req.body.doctorId,
-        qualification: req.body.qualification,
-      },
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(400).send({ success: false, message: err });
-    });
 
-  if (result.count == 0)
-    db.qualifications
-      .create(req.body)
-      .then(() => {
-        res.status(200).send(" Qualification Added!!");
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(400).send({ success: false, message: err });
-      });
-  else res.status(200).send("Data Already Added");
-};
 
 exports.patchQualifications = async (req, res) => {
   let result = await db.qualifications.findOne({
@@ -76,7 +52,7 @@ exports.patchQualifications = async (req, res) => {
       })
       .catch((err) => {
         console.log(err);
-        res.status(400).send({ success: false, message: err });
+        res.status(400).send({ success: false, message: err.message });
       });
   }
 };
@@ -92,6 +68,6 @@ exports.deleteQualification = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ success: false, message: err })
+      res.status(400).send({ success: false, message: err.message })
     });
 };

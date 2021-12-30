@@ -19,7 +19,7 @@ exports.getDoctors = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ success: false, message: err });
+      res.status(400).send({ success: false, message: err.message });
     });
 };
 
@@ -37,7 +37,7 @@ exports.editDoctor = async (req, res) => {
       .then((response) => {
         res.status(200).send("Doctor Added!!");
       })
-      .catch((err) => res.status(400).send({ success: false, message: err }));
+      .catch((err) => res.status(400).send({ success: false, message: err.message }));
   }
 };
 
@@ -49,7 +49,7 @@ exports.addDoctor = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ success: false, message: err });
+      res.status(400).send({ success: false, message: err.message });
     });
 };
 
@@ -66,6 +66,6 @@ exports.deleteDoctor = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ success: false, message: err });
+      res.status(400).send({ success: false, message: err.message });
     });
 };

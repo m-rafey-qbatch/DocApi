@@ -18,7 +18,7 @@ exports.getPatients = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ success: false, message: err });
+      res.status(400).send({ success: false, message: err.message });
     });
 };
 
@@ -30,7 +30,7 @@ exports.addPatient = (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ success: false, message: err });
+      res.status(400).send({ success: false, message: err.message });
     });
 };
 
@@ -49,7 +49,7 @@ exports.updatePatient = async (req, res) => {
         res.status(200).send("Patient Added!!");
       })
       .catch((err) =>{console.log(err)
-      res.status(400).send({ success: false, message: err })});
+      res.status(400).send({ success: false, message: err.message })});
   }
 };
 
@@ -65,6 +65,6 @@ exports.deletePatient = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ success: false, message: err })
+      res.status(400).send({ success: false, message: err.message })
     });
 };

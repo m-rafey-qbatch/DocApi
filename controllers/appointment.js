@@ -1,6 +1,6 @@
 const db = require("../models/index");
 exports.getAppointments = async (req, res) => {
-  let whereObj = {};
+  let whereObj = [];
   let pageNo = 0;
   let pageLength = 5;
 
@@ -10,56 +10,22 @@ exports.getAppointments = async (req, res) => {
   if (page) pageNo = page;
   if (date) whereObj.push({ date: date });
   if (status) whereObj.push({ status: status });
+  if (doctorId) whereObj.push({ doctorId: doctorId });
+  if (patientId) whereObj.push({ patientId: patientId });
 
-  if (doctorId) {
-    db.doctors
-      .findAndCountAll({
-        where: whereObj,
-        include: [
-          {
-            model: db.appointments,
-            where: whereObj,
-          },
-          { model: db.qualifications, attributes: ["qualification"] },
-        ],
-        where: { doctorId: doctorId },
-      })
-      .then((response) => {
-        res.status(200).send({ success: true, appointments: response });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(400).send({ success: false, message: err });
-      });
-  } else if (patientId) {
-    db.patients
-      .findAndCountAll({
-        offset: pageLength * pageNo,
-        include: { model: db.appointments, where: whereObj },
-        where: { patientId: patientId },
-      })
-      .then((response) => {
-        res.status(200).send({ success: true, appointments: response });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(400).send({ success: false, message: err });
-      });
-  } else {
-    db.appointments
-      .findAndCountAll({
-        where: whereObj,
-        limit: pageLength,
-        offset: pageLength * pageNo,
-      })
-      .then((response) => {
-        res.status(200).send({ success: true, appointments: response });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(400).send({ success: false, message: err });
-      });
-  }
+  db.appointments
+    .findAndCountAll({
+      where: whereObj,
+      limit: pageLength,
+      offset: pageLength * pageNo,
+    })
+    .then((response) => {
+      res.status(200).send({ success: true, appointments: response });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send({ success: false, message: err });
+    });
 };
 
 exports.createAppointment = async (req, res) => {

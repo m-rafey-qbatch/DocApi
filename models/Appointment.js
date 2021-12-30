@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   const Appointment = sequelize.define("appointments", {
     appointmentId: {
@@ -10,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       required: true,
     },
     status: {
-      type: DataTypes.STRING,
+      type: Sequelize.ENUM('f'),
+  
     },
     doctorId: {
       type: DataTypes.INTEGER,

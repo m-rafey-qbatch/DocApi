@@ -1,3 +1,4 @@
+
 module.exports = (sequelize, DataTypes) => {
   const Patient = sequelize.define("patients", {
     patientId: {
@@ -10,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       required: true,
     },
     gender: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM,
+      values:['other']
     },
     age: {
       type: DataTypes.INTEGER,

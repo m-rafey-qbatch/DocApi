@@ -3,8 +3,8 @@ const Joi = require("joi");
 const createAppointment = Joi.object({
   patientId: Joi.number().integer().required(),
   doctorId: Joi.number().integer().required(),
-  date: Joi.date().less('now').required(),
-  status: Joi.string().max(20).required(),
+  date: Joi.date().greater('now').required(),
+  status: Joi.string().valid('pending', 'canceled','completed').required(),
 });
 
 const getAppointment = Joi.object({
@@ -20,7 +20,7 @@ const getAppointment = Joi.object({
 const updateAppointment = Joi.object({
   patientId: Joi.number().integer().required(),
   doctorId: Joi.number().integer().required(),
-  date: Joi.date().less('now').required(),
+  date: Joi.date().greater('now').required(),
   status: Joi.string().max(20).required().optional(),
   appointmentId: Joi.number().integer().required(),
 });

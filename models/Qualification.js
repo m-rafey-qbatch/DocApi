@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     }).catch((err) => Promise.reject(err));
     if (result.count != 0)
-      return Promise.reject("Qualification Already Exists!");
+      return Promise.reject( new Error ("Qualification Already Exists!"));
   });
   return Qualification;
 };

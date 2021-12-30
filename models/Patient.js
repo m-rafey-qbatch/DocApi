@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         phoneNo: patient.phoneNo,
       },
     }).catch((err) => Promise.reject(err));
-    if (result.count != 0) return Promise.reject("Patient Already Exists!");
+    if (result.count != 0) return Promise.reject(new Error("Patient Already Exists!"));
   });
 
   return Patient;

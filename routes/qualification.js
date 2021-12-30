@@ -27,7 +27,10 @@ router.put(
   qualificationController.editQualification
 );
 
-router.delete("/:id", validateRequest(getQualification), qualificationController.deleteQualification);
-
+router.delete(
+  "/:id",
+  validateRequest(getQualification),
+  qualificationController.deleteQualification
+);
 
 module.exports = router;

@@ -32,7 +32,7 @@ exports.createAppointment = async (req, res) => {
   db.appointments
     .create(req.body)
     .then((response) => {
-      res.status(200).send("Appointment Added!!");
+      res.status(200).send({ success: true, message: "Appointment Added!" });
     })
     .catch((err) => {
       console.log(err)
@@ -47,12 +47,13 @@ exports.editAppointment = async (req, res) => {
   if (result) {
     result.update(req.body);
     result.save();
-    res.status(200).send("Appointment Updated!!");
+    res.status(200).send({ success: true, message: "Appointment Updated!" });
   } else {
     db.appointments
       .create(req.body)
       .then((response) => {
-        res.status(200).send("Appointment Added!!");
+        res.status(200).send({ success: true, message: "Appointment Added!" });
+
       })
       .catch((err) => {
         console.log(err);

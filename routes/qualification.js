@@ -14,17 +14,17 @@ router.get(
 router.post(
   "/",
   validateRequest(addQualification),
-  qualificationController.postQualifications
+  qualificationController.addQualification
 );
+// router.put(
+//   "/",
+//   validateRequest(addQualification),
+//   qualificationController.putQualifications
+// );
 router.put(
   "/",
   validateRequest(addQualification),
-  qualificationController.putQualifications
-);
-router.patch(
-  "/",
-  validateRequest(addQualification),
-  qualificationController.patchQualifications
+  qualificationController.editQualification
 );
 
 router.delete("/:id", validateRequest(getQualification), qualificationController.deleteQualification);

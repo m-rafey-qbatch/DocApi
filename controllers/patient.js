@@ -14,7 +14,7 @@ exports.getPatients = async (req, res) => {
       offset: pageLength * pageNo,
     })
     .then((response) => {
-      res.status(200).send(response);
+      res.status(200).send({ success: true, patients: response });
     })
     .catch((err) => {
       console.log(err);
@@ -26,7 +26,8 @@ exports.addPatient = (req, res) => {
   db.patients
     .create(req.body)
     .then(() => {
-      res.status(200).send("Patient Added!!");
+      res.status(200).send({ success: true, message: "Patient Added!" });
+
     })
     .catch((err) => {
       console.log(err);
@@ -41,15 +42,19 @@ exports.updatePatient = async (req, res) => {
   if (result) {
     await result.update(req.body);
     await result.save();
-    res.status(200).send("Patient Updated!!");
+    res.status(200).send({ success: true, message: "Patient Updated!" });
+
   } else {
     db.patients
       .create(req.body)
       .then(() => {
-        res.status(200).send("Patient Added!!");
+        res.status(200).send({ success: true, message: "Patient Added!" });
+
       })
-      .catch((err) =>{console.log(err)
-      res.status(400).send({ success: false, message: err.message })});
+      .catch((err) => {
+        console.log(err);
+        res.status(400).send({ success: false, message: err.message });
+      });
   }
 };
 
@@ -65,6 +70,6 @@ exports.deletePatient = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ success: false, message: err.message })
+      res.status(400).send({ success: false, message: err.message });
     });
 };

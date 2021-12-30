@@ -15,7 +15,8 @@ exports.getDoctors = async (req, res) => {
       include: { model: db.qualifications },
     })
     .then((response) => {
-      res.status(200).send(response);
+      res.status(200).send({ success: true, doctors: response});
+
     })
     .catch((err) => {
       console.log(err);
@@ -30,12 +31,14 @@ exports.editDoctor = async (req, res) => {
   if (result) {
     result.update(req.body);
     result.save();
-    res.status(200).send("Doctor Updated!!");
+    res.status(200).send({ success: true, message: "Doctor Updated!" });
+
   } else {
     db.doctors
       .create(req.body)
       .then((response) => {
-        res.status(200).send("Doctor Added!!");
+        res.status(200).send({ success: true, message: "Doctor Added!" });
+
       })
       .catch((err) => res.status(400).send({ success: false, message: err.message }));
   }
@@ -45,7 +48,8 @@ exports.addDoctor = async (req, res) => {
   db.doctors
     .create(req.body)
     .then(() => {
-      res.status(200).send("Doctor Added!!");
+      res.status(200).send({ success: true, message: "Doctor Added!"  });
+
     })
     .catch((err) => {
       console.log(err);

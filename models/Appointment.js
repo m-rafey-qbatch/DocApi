@@ -1,4 +1,5 @@
-const Sequelize = require('sequelize')
+const { STATUS } = require("../utils/constants");
+
 module.exports = (sequelize, DataTypes) => {
   const Appointment = sequelize.define("appointments", {
     appointmentId: {
@@ -11,7 +12,14 @@ module.exports = (sequelize, DataTypes) => {
       required: true,
     },
     status: {
-      type: Sequelize.ENUM('f'),
+      type: DataTypes.STRING,
+
+      validate: {
+        isIn: {
+          args: [STATUS],
+          msg: "Must be a valid type => " + STATUS,
+        },
+      },
   
     },
     doctorId: {

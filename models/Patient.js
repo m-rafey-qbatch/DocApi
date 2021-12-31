@@ -1,3 +1,4 @@
+const { GENDERS } = require("../utils/constants");
 
 module.exports = (sequelize, DataTypes) => {
   const Patient = sequelize.define("patients", {
@@ -10,24 +11,31 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       required: true,
     },
+
     gender: {
-      type: DataTypes.ENUM,
-        values:['other','male','female']
+      type: DataTypes.STRING,
+
+      validate: {
+        isIn: {
+          args: [GENDERS],
+          msg: "Must be a valid type => " + GENDERS,
+        },
+      },
     },
     age: {
       type: DataTypes.INTEGER,
     },
     phoneNo: {
       type: DataTypes.STRING,
-      required: true, 
+      required: true,
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull:false,
+      allowNull: false,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull:false,
+      allowNull: false,
     },
   });
 
@@ -41,7 +49,8 @@ module.exports = (sequelize, DataTypes) => {
         phoneNo: patient.phoneNo,
       },
     }).catch((err) => Promise.reject(err));
-    if (result.count != 0) return Promise.reject(new Error("Patient Already Exists!"));
+    if (result.count != 0)
+      return Promise.reject(new Error("Patient Already Exists!"));
   });
 
   return Patient;

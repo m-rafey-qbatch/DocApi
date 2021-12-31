@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     gender: {
       type: DataTypes.ENUM,
-        values:['OTHER','othr']
+        values:['other','male','female']
     },
     age: {
       type: DataTypes.INTEGER,

@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       indexes: [
         {
-          unique: false,
+          unique: true,
           fields: ["email"],
         },
       ],

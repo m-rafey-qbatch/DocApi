@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 const addQualification = Joi.object({
-  qualificationId: Joi.number().required(),
+  doctorId: Joi.number().required(),
   qualification: Joi.string().max(30).required(),
 
 });
@@ -11,7 +11,13 @@ const getQualification = Joi.object({
   page: Joi.number().optional(),
 
 });
+const updateQualification = Joi.object({
+  qualificationId: Joi.number().optional(),
+  page: Joi.number().optional(),
+
+});
 module.exports = {
   addQualification,
-  getQualification
+  getQualification,
+  updateQualification
 };

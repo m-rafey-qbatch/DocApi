@@ -5,6 +5,7 @@ const { validateRequest } = require("../middleware/RequestVlidations");
 const {
   getQualification,
   addQualification,
+  updateQualification
 } = require("../JoiSchemas/Qualification");
 router.get(
   "/",
@@ -23,7 +24,7 @@ router.post(
 // );
 router.put(
   "/",
-  validateRequest(addQualification),
+  validateRequest(updateQualification),
   qualificationController.editQualification
 );
 

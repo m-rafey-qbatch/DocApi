@@ -10,6 +10,8 @@ var patientRouter = require('./routes/patient');
 var qalificationRouter = require('./routes/qualification');
 var appointmentRouter = require('./routes/appointment');
 var app = express();
+//dotenv
+require('dotenv').config()
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,6 +32,7 @@ app.use('/appointments', appointmentRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
 
 // error handler
 app.use(function(err, req, res, next) {

@@ -1,21 +1,18 @@
 const db = require("../models/index");
 
 exports.getQualifications = async (req, res) => {
-  let pageNo = 0;
-  let pageLength = 10;
-  const { perPage, page } = req.query;
+  const { pageLength, page } = req.query;
 
-  if (perPage) pageLength = perPage;
-  if (page) pageNo = page;
-
+  const length = pageLength || 5;
+  const pageNo = page || 0;
+  
   db.qualifications
     .findAndCountAll({
-      limit: pageLength,
-      offset: pageLength * pageNo,
+      limit: length,
+      offset: length * pageNo,
     })
     .then((response) => {
-      res.status(200).send({ success: true, qualifications:response });
-
+      res.status(200).send({ success: true, qualifications: response });
     })
     .catch((err) => {
       console.log(err);
@@ -27,16 +24,15 @@ exports.addQualification = (req, res) => {
   db.qualifications
     .create(req.body)
     .then(() => {
-      res.status(200).send({ success: true, message: "Qualification Created!" });
-
+      res
+        .status(200)
+        .send({ success: true, message: "Qualification Created!" });
     })
     .catch((err) => {
       console.log(err);
       res.status(400).send({ success: false, message: err.message });
     });
 };
-
-
 
 exports.editQualification = async (req, res) => {
   let result = await db.qualifications.findOne({
@@ -46,13 +42,13 @@ exports.editQualification = async (req, res) => {
     await result.update(req.body);
     await result.save();
     res.status(200).send({ success: true, message: "Qualification Updated!" });
-
   } else {
     db.qualifications
       .create(req.body)
       .then(() => {
-        res.status(200).send({ success: true, message: "Qualification Added!" });
-
+        res
+          .status(200)
+          .send({ success: true, message: "Qualification Added!" });
       })
       .catch((err) => {
         console.log(err);
@@ -72,6 +68,6 @@ exports.deleteQualification = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).send({ success: false, message: err.message })
+      res.status(400).send({ success: false, message: err.message });
     });
 };

@@ -1,22 +1,19 @@
 const db = require("../models/index");
 
 exports.getDoctors = async (req, res) => {
-  let pageNo = 0;
-  let pageLength = 5;
-  const { perPage, page } = req.query;
+  const { pageLength, page } = req.query;
 
-  if (perPage) pageLength = perPage;
-  if (page) pageNo = page;
+  const length = pageLength || 5;
+  const pageNo = page || 0;
 
   db.doctors
     .findAndCountAll({
-      limit: pageLength,
-      offset: pageLength * pageNo,
+      limit: length,
+      offset: length * pageNo,
       include: { model: db.qualifications },
     })
     .then((response) => {
-      res.status(200).send({ success: true, doctors: response});
-
+      res.status(200).send({ success: true, doctors: response });
     })
     .catch((err) => {
       console.log(err);
@@ -32,15 +29,15 @@ exports.editDoctor = async (req, res) => {
     result.update(req.body);
     result.save();
     res.status(200).send({ success: true, message: "Doctor Updated!" });
-
   } else {
     db.doctors
       .create(req.body)
       .then((response) => {
         res.status(200).send({ success: true, message: "Doctor Added!" });
-
       })
-      .catch((err) => res.status(400).send({ success: false, message: err.message }));
+      .catch((err) =>
+        res.status(400).send({ success: false, message: err.message })
+      );
   }
 };
 
@@ -48,8 +45,7 @@ exports.addDoctor = async (req, res) => {
   db.doctors
     .create(req.body)
     .then(() => {
-      res.status(200).send({ success: true, message: "Doctor Added!"  });
-
+      res.status(200).send({ success: true, message: "Doctor Added!" });
     })
     .catch((err) => {
       console.log(err);

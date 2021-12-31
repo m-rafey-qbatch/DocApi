@@ -1,17 +1,14 @@
 const db = require("../models/index");
 
 exports.getPatients = async (req, res) => {
-  let pageNo = 0;
-  let pageLength = 5;
-  const { perPage, page } = req.query;
+  const { pageLength, page } = req.query;
 
-  if (perPage) pageLength = perPage;
-  if (page) pageNo = page;
-
+  const length = pageLength || 5;
+  const pageNo = page || 0;
   db.patients
     .findAndCountAll({
-      limit: pageLength,
-      offset: pageLength * pageNo,
+      limit: length,
+      offset: length * pageNo,
     })
     .then((response) => {
       res.status(200).send({ success: true, patients: response });
@@ -27,7 +24,6 @@ exports.addPatient = (req, res) => {
     .create(req.body)
     .then(() => {
       res.status(200).send({ success: true, message: "Patient Added!" });
-
     })
     .catch((err) => {
       console.log(err);
@@ -43,13 +39,11 @@ exports.updatePatient = async (req, res) => {
     await result.update(req.body);
     await result.save();
     res.status(200).send({ success: true, message: "Patient Updated!" });
-
   } else {
     db.patients
       .create(req.body)
       .then(() => {
         res.status(200).send({ success: true, message: "Patient Added!" });
-
       })
       .catch((err) => {
         console.log(err);

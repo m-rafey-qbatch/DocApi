@@ -1,10 +1,11 @@
 const Joi = require("joi");
+const {STATUS} = require('../utils/constants')
 
 const createAppointment = Joi.object({
   patientId: Joi.number().integer().required(),
   doctorId: Joi.number().integer().required(),
   date: Joi.date().greater('now').required(),
-  status: Joi.string().valid('pending', 'canceled','completed').required(),
+  status: Joi.string().valid(...STATUS).optional(),
 });
 
 const getAppointment = Joi.object({
@@ -12,7 +13,7 @@ const getAppointment = Joi.object({
   doctorId: Joi.number().integer().optional(),
   date: Joi.date().optional(),
   status: Joi.string().max(20).optional(),
-  perPage: Joi.number().optional(),
+  pageLength: Joi.number().optional(),
   page: Joi.number().optional(),
 
 });

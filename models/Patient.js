@@ -12,14 +12,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     gender: {
       type: DataTypes.ENUM,
-      values:['other']
+        values:['OTHER','othr']
     },
     age: {
       type: DataTypes.INTEGER,
     },
     phoneNo: {
       type: DataTypes.STRING,
-      required: true,
+      required: true, 
     },
     createdAt: {
       type: DataTypes.DATE,

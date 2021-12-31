@@ -1,23 +1,19 @@
 const db = require("../models/index");
 exports.getAppointments = async (req, res) => {
-  let whereObj = [];
-  let pageNo = 0;
-  let pageLength = 5;
+  let filters = [];
+  const { ...args } = req.query;
+  const length = pageLength || 5;
+  const pageNo = page || 0;
 
-  const { date, doctorId, patientId, status, perPage, page } = req.query;
-
-  if (perPage) pageLength = perPage;
-  if (page) pageNo = page;
-  if (date) whereObj.push({ date: date });
-  if (status) whereObj.push({ status: status });
-  if (doctorId) whereObj.push({ doctorId: doctorId });
-  if (patientId) whereObj.push({ patientId: patientId });
-
+  for (const filter in args) {
+    filters.push({ [filter]: args[filter] });
+  }
+  
   db.appointments
     .findAndCountAll({
-      where: whereObj,
-      limit: pageLength,
-      offset: pageLength * pageNo,
+      where: filters,
+      limit: length,
+      offset: length * pageNo,
     })
     .then((response) => {
       res.status(200).send({ success: true, appointments: response });
@@ -35,7 +31,7 @@ exports.createAppointment = async (req, res) => {
       res.status(200).send({ success: true, message: "Appointment Added!" });
     })
     .catch((err) => {
-      console.log(err)
+      console.log(err);
       res.status(205).send(err.message);
     });
 };
@@ -53,7 +49,6 @@ exports.editAppointment = async (req, res) => {
       .create(req.body)
       .then((response) => {
         res.status(200).send({ success: true, message: "Appointment Added!" });
-
       })
       .catch((err) => {
         console.log(err);

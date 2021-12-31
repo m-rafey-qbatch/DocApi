@@ -9,7 +9,7 @@ const addDoctor = Joi.object({
 
 const getDoctor = Joi.object({
   pageLength: Joi.number().optional(),
-  pageNumber: Joi.number().optional(),
+  page: Joi.number().optional(),
 
 });
 module.exports = {

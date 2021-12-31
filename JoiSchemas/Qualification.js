@@ -8,7 +8,7 @@ const addQualification = Joi.object({
 
 const getQualification = Joi.object({
   pageLength: Joi.number().optional(),
-  pageNumber: Joi.number().optional(),
+  page: Joi.number().optional(),
 
 });
 module.exports = {

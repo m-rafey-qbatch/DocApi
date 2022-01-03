@@ -1,15 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
   const Qualification = sequelize.define("qualifications", {
-    qualificationId: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    doctorId: {
+    doctor_id: {
       type: DataTypes.INTEGER,
       references: {
         model: "doctors",
-        key: "doctorId",
+        key: "id",
         allowNull: false,
       },
       onDelete: "CASCADE",
@@ -34,14 +34,14 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Qualification.associate = (models) => {
-    Qualification.belongsTo(models.doctors, { foreignKey: "doctorId" });
+    Qualification.belongsTo(models.doctors, { foreignKey: "doctor_id" });
   };
 
   Qualification.addHook("beforeCreate", async (qua, options) => {
     let result = await Qualification.findAndCountAll({
       where: {
         qualification: qua.qualification,
-        doctorId: qua.doctorId,
+        doctor_id: qua.doctor_id,
       },
     }).catch((err) => Promise.reject(err));
     if (result.count != 0)

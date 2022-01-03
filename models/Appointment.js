@@ -2,7 +2,7 @@ const { STATUSES } = require("../utils/constants");
 
 module.exports = (sequelize, DataTypes) => {
   const Appointment = sequelize.define("appointments", {
-    appointmentId: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -20,49 +20,49 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
-    doctorId: {
+    doctor_id: {
       type: DataTypes.INTEGER,
       required: true,
       references: {
         model: "doctors",
-        key: "doctorId",
+        key: "id",
         allowNull: false,
       },
       onDelete: "CASCADE",
     },
-    patientId: {
+    patient_id: {
       type: DataTypes.INTEGER,
       required: true,
       references: {
         model: "patients",
-        key: "patientId",
+        key: "id",
         allowNull: false,
       },
       onDelete: "CASCADE",
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull:false,
+      allowNull: false,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull:false,
+      allowNull: false,
     },
   });
 
   Appointment.associate = (models) => {
-    Appointment.belongsTo(models.doctors, { foreignKey: "doctorId" });
-    Appointment.belongsTo(models.patients, { foreignKey: "patientId" });
+    Appointment.belongsTo(models.doctors, { foreignKey: "doctor_id" });
+    Appointment.belongsTo(models.patients, { foreignKey: "patient_id" });
   };
 
   Appointment.addHook("beforeCreate", async (appoint) => {
     let result = await Appointment.findAndCountAll({
       where: {
-        doctorId: appoint.doctorId,
+        doctor_id: appoint.doctor_id,
         date: appoint.date,
       },
     }).catch((err) => Promise.reject(err));
-    if (result.count >= 5) return Promise.reject(new Error ("Slots Fulfilled!"));
+    if (result.count >= 5) return Promise.reject(new Error("Slots Fulfilled!"));
   });
   return Appointment;
 };

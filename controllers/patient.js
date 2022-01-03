@@ -51,7 +51,7 @@ exports.deletePatient = async (req, res) => {
   const { patId } = req.params;
   await db.patients
     .destroy({
-      where: { patientId: patId },
+      where: { id: patId },
     })
     .then((response) => {
       res.sendStatus(200);

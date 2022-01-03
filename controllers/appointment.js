@@ -37,7 +37,7 @@ exports.createAppointment = async (req, res) => {
 
 exports.updateAppointment = async (req, res) => {
   let result = await db.appointments.findOne({
-    where: { appointmentId: req.body.appointmentId },
+    where: { id: req.body.id },
   });
   if (result) {
     result.update(req.body);
@@ -58,7 +58,7 @@ exports.deleteAppointment = async (req, res) => {
   let { id } = req.params;
   await db.appointments
     .destroy({
-      where: { appointmentId: id },
+      where: { id: id },
     })
     .then((response) => {
       res.sendStatus(200);

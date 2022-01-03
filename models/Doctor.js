@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Doctor = sequelize.define(
     "doctors",
     {
-      doctorId: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -55,8 +55,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Doctor.associate = (models) => {
-    Doctor.hasMany(models.appointments, { foreignKey: "doctorId" });
-    Doctor.hasMany(models.qualifications, { foreignKey: "doctorId" });
+    Doctor.hasMany(models.appointments, { foreignKey: "doctor_id" });
+    Doctor.hasMany(models.qualifications, { foreignKey: "doctor_id" });
   };
 
   Doctor.addHook("beforeCreate", async (doc) => {

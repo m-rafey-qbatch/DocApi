@@ -1,7 +1,7 @@
 const { GENDERS } = require("../utils/constants");
 module.exports = (sequelize, DataTypes) => {
   const Patient = sequelize.define("patients", {
-    patientId: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Patient.associate = (models) => {
-    Patient.hasMany(models.appointments, { foreignKey: "patientId" });
+    Patient.hasMany(models.appointments, { foreignKey: "patient_id" });
   };
 
   Patient.addHook("beforeCreate", async (patient) => {

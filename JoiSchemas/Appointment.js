@@ -2,15 +2,15 @@ const Joi = require("joi");
 const { STATUSES } = require("../utils/constants");
 
 const createAppointment = Joi.object({
-  patientId: Joi.number().integer().required(),
-  doctorId: Joi.number().integer().required(),
+  patient_id: Joi.number().integer().required(),
+  doctor_id: Joi.number().integer().required(),
   date: Joi.date().greater("now").required(),
   status: Joi.string().valid(...STATUSES),
 });
 
 const getAppointment = Joi.object({
-  patientId: Joi.number().integer(),
-  doctorId: Joi.number().integer(),
+  patient_id: Joi.number().integer(),
+  doctor_id: Joi.number().integer(),
   date: Joi.date(),
   status: Joi.string().max(20),
   pageLength: Joi.number().min(1).max(100),
@@ -18,11 +18,11 @@ const getAppointment = Joi.object({
 });
 
 const updateAppointment = Joi.object({
-  patientId: Joi.number().integer().required(),
-  doctorId: Joi.number().integer().required(),
+  patient_id: Joi.number().integer().required(),
+  doctor_id: Joi.number().integer().required(),
   date: Joi.date().greater("now").required(),
   status: Joi.string().max(20).required(),
-  appointmentId: Joi.number().integer().required(),
+  id: Joi.number().integer().required(),
 });
 module.exports = {
   createAppointment,

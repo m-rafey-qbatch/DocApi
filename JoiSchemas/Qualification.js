@@ -1,6 +1,6 @@
 const Joi = require("joi");
 const addQualification = Joi.object({
-  doctorId: Joi.number().required(),
+  doctor_id: Joi.number().required(),
   qualification: Joi.string().max(30).required(),
 });
 
@@ -10,7 +10,7 @@ const getQualification = Joi.object({
 });
 
 const updateQualification = Joi.object({
-  qualificationId: Joi.number(),
+  id: Joi.number(),
   qualification: Joi.string().max(30).required(),
 });
 

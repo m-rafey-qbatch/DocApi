@@ -2,11 +2,11 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.changeColumn("appointments", "doctorId", {
+    queryInterface.changeColumn("appointments", "doctor_id", {
       type: Sequelize.INTEGER,
       references: {
         model: "doctors",
-        key: "doctorId",
+        key: "id",
       },
       onDelete: "CASCADE",
       allowNull:false,
@@ -14,11 +14,11 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.changeColumn("appointments", "doctorId", {
+    queryInterface.changeColumn("appointments", "doctor_id", {
       type: Sequelize.INTEGER,
       references: {
         model: "doctors",
-        key: "doctorId",
+        key: "id",
       },
       onDelete: "CASCADE",
      

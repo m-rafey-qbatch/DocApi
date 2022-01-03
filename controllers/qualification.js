@@ -31,7 +31,7 @@ exports.addQualification = (req, res) => {
 
 exports.updateQualification = async (req, res) => {
   let result = await db.qualifications.findOne({
-    where: { qualificationId: req.body.qualificationId },
+    where: { id: req.body.id },
   });
   if (result) {
     await result.update(req.body);
@@ -53,7 +53,7 @@ exports.deleteQualification = async (req, res) => {
   const { id } = req.params;
   await db.qualifications
     .destroy({
-      where: { qualificationId: id },
+      where: { id: id },
     })
     .then(() => {
       res.sendStatus(200);

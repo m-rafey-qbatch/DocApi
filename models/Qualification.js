@@ -32,15 +32,15 @@ module.exports = (sequelize, DataTypes) => {
     Qualification.belongsTo(models.doctors, { foreignKey: "doctorId" });
   };
 
-  // Qualification.addHook("beforeCreate", async (qua, options) => {
-  //   let result = await Qualification.findAndCountAll({
-  //     where: {
-  //       qualification: qua.qualification,
-  //       doctorId: qua.doctorId,
-  //     },
-  //   }).catch((err) => Promise.reject(err));
-  //   if (result.count != 0)
-  //     return Promise.reject( new Error ("Qualification Already Exists!"));
-  // });
+  Qualification.addHook("beforeCreate", async (qua, options) => {
+    let result = await Qualification.findAndCountAll({
+      where: {
+        qualification: qua.qualification,
+        doctorId: qua.doctorId,
+      },
+    }).catch((err) => Promise.reject(err));
+    if (result.count != 0)
+      return Promise.reject( new Error ("Qualification Already Exists!"));
+  });
   return Qualification;
 };

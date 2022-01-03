@@ -59,7 +59,6 @@ exports.editAppointment = async (req, res) => {
 
 exports.deleteAppointment = async (req, res) => {
   let { id } = req.params;
-
   await db.appointments
     .destroy({
       where: { appointmentId: id },

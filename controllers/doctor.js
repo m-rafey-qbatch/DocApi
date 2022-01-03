@@ -2,7 +2,6 @@ const db = require("../models/index");
 
 exports.getDoctors = async (req, res) => {
   const { pageLength, page } = req.query;
-
   const length = pageLength || 5;
   const pageNo = page || 0;
 
@@ -35,9 +34,9 @@ exports.editDoctor = async (req, res) => {
       .then((response) => {
         res.status(200).send({ success: true, message: "Doctor Added!" });
       })
-      .catch((err) =>
-        res.status(400).send({ success: false, message: err.message })
-      );
+      .catch((err) => {
+        res.status(400).send({ success: false, message: err.message });
+      });
   }
 };
 

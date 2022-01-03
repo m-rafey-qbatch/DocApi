@@ -13,14 +13,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     status: {
       type: DataTypes.STRING,
-
       validate: {
         isIn: {
           args: [STATUS],
           msg: "Must be a valid type => " + STATUS,
         },
       },
-  
     },
     doctorId: {
       type: DataTypes.INTEGER,
@@ -66,6 +64,5 @@ module.exports = (sequelize, DataTypes) => {
     }).catch((err) => Promise.reject(err));
     if (result.count >= 5) return Promise.reject(new Error ("Slots Fulfilled!"));
   });
-
   return Appointment;
 };

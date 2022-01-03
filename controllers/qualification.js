@@ -2,10 +2,9 @@ const db = require("../models/index");
 
 exports.getQualifications = async (req, res) => {
   const { pageLength, page } = req.query;
-
   const length = pageLength || 5;
   const pageNo = page || 0;
-  
+
   db.qualifications
     .findAndCountAll({
       limit: length,
@@ -25,8 +24,7 @@ exports.addQualification = (req, res) => {
     .create(req.body)
     .then(() => {
       res
-        .status(200)
-        .send({ success: true, message: "Qualification Created!" });
+        .status(200).send({ success: true, message: "Qualification Created!" });
     })
     .catch((err) => {
       console.log(err);
@@ -47,8 +45,7 @@ exports.editQualification = async (req, res) => {
       .create(req.body)
       .then(() => {
         res
-          .status(200)
-          .send({ success: true, message: "Qualification Added!" });
+          .status(200).send({ success: true, message: "Qualification Added!" });
       })
       .catch((err) => {
         console.log(err);

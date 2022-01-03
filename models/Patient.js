@@ -1,5 +1,4 @@
 const { GENDERS } = require("../utils/constants");
-
 module.exports = (sequelize, DataTypes) => {
   const Patient = sequelize.define("patients", {
     patientId: {
@@ -14,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
 
     gender: {
       type: DataTypes.STRING,
-
       validate: {
         isIn: {
           args: [GENDERS],
@@ -52,6 +50,5 @@ module.exports = (sequelize, DataTypes) => {
     if (result.count != 0)
       return Promise.reject(new Error("Patient Already Exists!"));
   });
-
   return Patient;
 };

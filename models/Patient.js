@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       required: true,
+      validate: {
+        len: {
+          args: [1, 30],
+          msg: "Name must be 30 characters max in length",
+        },
+      },
     },
 
     gender: {
@@ -22,10 +28,20 @@ module.exports = (sequelize, DataTypes) => {
     },
     age: {
       type: DataTypes.INTEGER,
+      validate: {
+        max: 110,
+        min: 0,
+      },
     },
     phoneNo: {
       type: DataTypes.STRING,
       required: true,
+      validate: {
+        is: {
+          args: /03[0-9]{9}$/,
+          msg: "must be a valid number in 03xxxxxxxxx formate",
+        },
+      },
     },
     createdAt: {
       type: DataTypes.DATE,

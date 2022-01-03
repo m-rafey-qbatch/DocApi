@@ -4,7 +4,6 @@ exports.getQualifications = async (req, res) => {
   const { pageLength, page } = req.query;
   const length = pageLength || 5;
   const pageNo = page || 0;
-
   db.qualifications
     .findAndCountAll({
       limit: length,
@@ -14,7 +13,6 @@ exports.getQualifications = async (req, res) => {
       res.status(200).send({ success: true, qualifications: response });
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).send({ success: false, message: err.message });
     });
 };
@@ -27,12 +25,11 @@ exports.addQualification = (req, res) => {
         .status(200).send({ success: true, message: "Qualification Created!" });
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).send({ success: false, message: err.message });
     });
 };
 
-exports.editQualification = async (req, res) => {
+exports.updateQualification = async (req, res) => {
   let result = await db.qualifications.findOne({
     where: { qualificationId: req.body.qualificationId },
   });
@@ -47,7 +44,6 @@ exports.editQualification = async (req, res) => {
           .status(200).send({ success: true, message: "Qualification Added!" });
       })
       .catch((err) => {
-        console.log(err);
         res.status(400).send({ success: false, message: err.message });
       });
   }
@@ -63,7 +59,6 @@ exports.deleteQualification = async (req, res) => {
       res.sendStatus(200);
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).send({ success: false, message: err.message });
     });
 };

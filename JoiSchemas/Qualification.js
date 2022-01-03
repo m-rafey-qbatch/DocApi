@@ -5,12 +5,12 @@ const addQualification = Joi.object({
 });
 
 const getQualification = Joi.object({
-  pageLength: Joi.number().optional(),
-  page: Joi.number().optional(),
+  pageLength: Joi.number().min(1).max(100),
+  page: Joi.number().min(1),
 });
 
 const updateQualification = Joi.object({
-  qualificationId: Joi.number().optional(),
+  qualificationId: Joi.number(),
   qualification: Joi.string().max(30).required(),
 });
 

@@ -1,4 +1,3 @@
-
 module.exports = (sequelize, DataTypes) => {
   const Qualification = sequelize.define("qualifications", {
     qualificationId: {
@@ -17,14 +16,20 @@ module.exports = (sequelize, DataTypes) => {
     },
     qualification: {
       type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [1, 50],
+          msg: "Qualification must be 50 characters max in length",
+        },
+      },
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull:false,
+      allowNull: false,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull:false,
+      allowNull: false,
     },
   });
 
@@ -40,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     }).catch((err) => Promise.reject(err));
     if (result.count != 0)
-      return Promise.reject( new Error ("Qualification Already Exists!"));
+      return Promise.reject(new Error("Qualification Already Exists!"));
   });
   return Qualification;
 };

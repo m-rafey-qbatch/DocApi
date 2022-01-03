@@ -2,7 +2,6 @@ const db = require("../models/index");
 
 exports.getPatients = async (req, res) => {
   const { pageLength, page } = req.query;
-
   const length = pageLength || 5;
   const pageNo = page || 0;
   db.patients
@@ -14,7 +13,6 @@ exports.getPatients = async (req, res) => {
       res.status(200).send({ success: true, patients: response });
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).send({ success: false, message: err.message });
     });
 };
@@ -26,7 +24,6 @@ exports.addPatient = (req, res) => {
       res.status(200).send({ success: true, message: "Patient Added!" });
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).send({ success: false, message: err.message });
     });
 };
@@ -45,7 +42,6 @@ exports.updatePatient = async (req, res) => {
         res.status(200).send({ success: true, message: "Patient Added!" });
       })
       .catch((err) => {
-        console.log(err);
         res.status(400).send({ success: false, message: err.message });
       });
   }
@@ -53,7 +49,6 @@ exports.updatePatient = async (req, res) => {
 
 exports.deletePatient = async (req, res) => {
   const { patId } = req.params;
-
   await db.patients
     .destroy({
       where: { patientId: patId },
@@ -62,7 +57,6 @@ exports.deletePatient = async (req, res) => {
       res.sendStatus(200);
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).send({ success: false, message: err.message });
     });
 };

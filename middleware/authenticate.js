@@ -4,7 +4,7 @@ const auth = (req, res, next) => {
     const [user, pass] = Buffer.from(base64Credentials, "base64")
       .toString()
       .split(":");
-    if (user == process.env.user && pass == process.env.pass) next();
+    if (user == process.env.AUTH_USER && pass == process.env.AUTH_PASSWORD) next();
     else {
       res.status(401).send({ success: false, message: "Autherization failed" });
     }

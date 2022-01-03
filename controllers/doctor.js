@@ -15,12 +15,11 @@ exports.getDoctors = async (req, res) => {
       res.status(200).send({ success: true, doctors: response });
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).send({ success: false, message: err.message });
     });
 };
 
-exports.editDoctor = async (req, res) => {
+exports.updateDoctor = async (req, res) => {
   let result = await db.doctors.findOne({
     where: { email: req.body.email },
   });
@@ -46,15 +45,12 @@ exports.addDoctor = async (req, res) => {
       res.status(200).send({ success: true, message: "Doctor Added!" });
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).send({ success: false, message: err.message });
     });
 };
 
 exports.deleteDoctor = async (req, res) => {
   const { docId } = req.params;
-  console.log(docId);
-
   await db.doctors
     .destroy({
       where: { doctorId: docId },
@@ -63,7 +59,6 @@ exports.deleteDoctor = async (req, res) => {
       res.sendStatus(200);
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).send({ success: false, message: err.message });
     });
 };

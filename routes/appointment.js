@@ -1,33 +1,34 @@
 var express = require("express");
 var router = express.Router();
 const appointmentController = require("../controllers/appointment");
-const { validateRequest } = require("../middleware/RequestVlidations");
+const { validateRequest } = require("../middleware/requestVlidations");
+const { auth } = require("../middleware/authenticate");
 const {
   getAppointment,
   createAppointment,
-  updateAppointment
+  updateAppointment,
 } = require("../JoiSchemas/Appointment");
 
 router.get(
   "/",
-  validateRequest(getAppointment, "query"),
+  validateRequest(getAppointment, "query"),auth,
   appointmentController.getAppointments
 );
 router.post(
   "/",
-  validateRequest(createAppointment),
+  validateRequest(createAppointment),auth,
   appointmentController.createAppointment
 );
 router.put(
   "/",
-  validateRequest(updateAppointment),
-  appointmentController.editAppointment
+  validateRequest(updateAppointment),auth,
+  appointmentController.updateAppointment
 );
 
 router.delete(
-    "/:id",
-    validateRequest(getAppointment),
-    appointmentController.deleteAppointment
-  );
+  "/:id",
+  validateRequest(getAppointment),auth,
+  appointmentController.deleteAppointment
+);
 
 module.exports = router;

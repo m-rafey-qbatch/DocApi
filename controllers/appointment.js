@@ -1,25 +1,25 @@
 const db = require("../models/index");
 exports.getAppointments = async (req, res) => {
   let filters = [];
-  const { ...args } = req.query;
+  const { page, pageLength, ...args } = req.query;
   const length = pageLength || 5;
-  const pageNo = page || 0;
+  const pageNo = page || 1;
 
   for (const filter in args) {
     filters.push({ [filter]: args[filter] });
   }
-  
+  console.log(filters);
+
   db.appointments
     .findAndCountAll({
       where: filters,
       limit: length,
-      offset: length * pageNo,
+      offset: length * (pageNo - 1),
     })
     .then((response) => {
       res.status(200).send({ success: true, appointments: response });
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).send({ success: false, message: err.message });
     });
 };
@@ -31,12 +31,11 @@ exports.createAppointment = async (req, res) => {
       res.status(200).send({ success: true, message: "Appointment Added!" });
     })
     .catch((err) => {
-      console.log(err);
-      res.status(205).send(err.message);
+      res.status(400).send(err.message);
     });
 };
 
-exports.editAppointment = async (req, res) => {
+exports.updateAppointment = async (req, res) => {
   let result = await db.appointments.findOne({
     where: { appointmentId: req.body.appointmentId },
   });
@@ -50,7 +49,6 @@ exports.editAppointment = async (req, res) => {
         res.status(200).send({ success: true, message: "Appointment Added!" });
       })
       .catch((err) => {
-        console.log(err);
         res.status(400).send({ success: false, message: err.message });
       });
   }
@@ -66,7 +64,6 @@ exports.deleteAppointment = async (req, res) => {
       res.sendStatus(200);
     })
     .catch((err) => {
-      console.log(err);
       res.status(400).send({ success: false, message: err.message });
     });
 };

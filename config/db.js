@@ -6,4 +6,4 @@ module.exports = {
       "host": process.env.HOST,
       "dialect": "postgres"
   }
-    
+  

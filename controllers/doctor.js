@@ -2,7 +2,7 @@ const db = require("../models/index");
 
 exports.getDoctors = async (req, res) => {
   const { pageLength, page } = req.query;
-  const length = pageLength || 5;
+  const length = pageLength || 50;
   const pageNo = page || 0;
 
   db.doctors
@@ -26,7 +26,6 @@ exports.editDoctor = async (req, res) => {
   });
   if (result) {
     result.update(req.body);
-    result.save();
     res.status(200).send({ success: true, message: "Doctor Updated!" });
   } else {
     db.doctors

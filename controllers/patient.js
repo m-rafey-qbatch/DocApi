@@ -37,7 +37,6 @@ exports.updatePatient = async (req, res) => {
   });
   if (result) {
     await result.update(req.body);
-    await result.save();
     res.status(200).send({ success: true, message: "Patient Updated!" });
   } else {
     db.patients

@@ -38,7 +38,6 @@ exports.editQualification = async (req, res) => {
   });
   if (result) {
     await result.update(req.body);
-    await result.save();
     res.status(200).send({ success: true, message: "Qualification Updated!" });
   } else {
     db.qualifications

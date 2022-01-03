@@ -42,7 +42,6 @@ exports.editAppointment = async (req, res) => {
   });
   if (result) {
     result.update(req.body);
-    result.save();
     res.status(200).send({ success: true, message: "Appointment Updated!" });
   } else {
     db.appointments

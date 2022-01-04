@@ -22,7 +22,7 @@ router.post(
 );
 
 router.put(
-  "/",
+  "/:id",
   validateRequest(updateQualification),
   qualificationController.updateQualification
 );

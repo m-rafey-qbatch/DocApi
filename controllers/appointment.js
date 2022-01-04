@@ -36,8 +36,9 @@ exports.createAppointment = async (req, res) => {
 };
 
 exports.updateAppointment = async (req, res) => {
+  const { id } = req.params;
   let result = await db.appointments.findOne({
-    where: { id: req.body.id },
+    where: { id: id},
   });
   if (result) {
     await result.update(req.body);

@@ -10,12 +10,11 @@ const getQualification = Joi.object({
 });
 
 const updateQualification = Joi.object({
-  id: Joi.number(),
   qualification: Joi.string().max(30).required(),
 });
 
 module.exports = {
   addQualification,
   getQualification,
-  updateQualification
+  updateQualification,
 };

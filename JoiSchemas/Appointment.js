@@ -22,7 +22,6 @@ const updateAppointment = Joi.object({
   doctor_id: Joi.number().integer().required(),
   date: Joi.date().greater("now").required(),
   status: Joi.string().max(20).required(),
-  id: Joi.number().integer().required(),
 });
 module.exports = {
   createAppointment,

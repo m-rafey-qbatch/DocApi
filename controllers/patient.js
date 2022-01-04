@@ -7,7 +7,7 @@ exports.getPatients = async (req, res) => {
   db.patients
     .findAndCountAll({
       limit: length,
-      offset: length * pageNo,
+      offset: length * (pageNo - 1),
     })
     .then((response) => {
       res.status(200).send({ success: true, patients: response });

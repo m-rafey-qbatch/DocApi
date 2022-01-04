@@ -15,13 +15,15 @@ router.get(
   validateRequest(getAppointment, "query"),
   appointmentController.getAppointments
 );
+
 router.post(
   "/",
   validateRequest(createAppointment),
   appointmentController.createAppointment
 );
+
 router.put(
-  "/",
+  "/:id",
   validateRequest(updateAppointment),
   appointmentController.updateAppointment
 );

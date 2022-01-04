@@ -7,7 +7,7 @@ exports.getQualifications = async (req, res) => {
   db.qualifications
     .findAndCountAll({
       limit: length,
-      offset: length * pageNo,
+      offset: length * (pageNo - 1),
     })
     .then((response) => {
       res.status(200).send({ success: true, qualifications: response });
@@ -22,7 +22,8 @@ exports.addQualification = (req, res) => {
     .create(req.body)
     .then(() => {
       res
-        .status(200).send({ success: true, message: "Qualification Created!" });
+        .status(200)
+        .send({ success: true, message: "Qualification Created!" });
     })
     .catch((err) => {
       res.status(400).send({ success: false, message: err.message });
@@ -30,8 +31,9 @@ exports.addQualification = (req, res) => {
 };
 
 exports.updateQualification = async (req, res) => {
+  const { id } = req.params;
   let result = await db.qualifications.findOne({
-    where: { id: req.body.id },
+    where: { id: id },
   });
   if (result) {
     await result.update(req.body);
@@ -41,7 +43,8 @@ exports.updateQualification = async (req, res) => {
       .create(req.body)
       .then(() => {
         res
-          .status(200).send({ success: true, message: "Qualification Added!" });
+          .status(200)
+          .send({ success: true, message: "Qualification Added!" });
       })
       .catch((err) => {
         res.status(400).send({ success: false, message: err.message });

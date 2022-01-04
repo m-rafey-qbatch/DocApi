@@ -2,13 +2,13 @@ const db = require("../models/index");
 
 exports.getDoctors = async (req, res) => {
   const { pageLength, page } = req.query;
-  const length = pageLength || 50;
+  const length = pageLength || 5;
   const pageNo = page || 0;
 
   db.doctors
     .findAndCountAll({
       limit: length,
-      offset: length * pageNo,
+      offset: length * (pageNo - 1),
       include: { model: db.qualifications },
     })
     .then((response) => {

@@ -2,11 +2,6 @@ module.exports = (sequelize, DataTypes) => {
   const Doctor = sequelize.define(
     "doctors",
     {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
       name: {
         type: DataTypes.STRING,
         required: true,
@@ -35,14 +30,6 @@ module.exports = (sequelize, DataTypes) => {
           min: 18,
         },
       },
-      createdAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
     },
     {
       indexes: [
@@ -51,7 +38,8 @@ module.exports = (sequelize, DataTypes) => {
           fields: ["email"],
         },
       ],
-    }
+    },
+    { timestamps: true }
   );
 
   Doctor.associate = (models) => {

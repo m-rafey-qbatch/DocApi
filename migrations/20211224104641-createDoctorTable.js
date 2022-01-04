@@ -6,7 +6,7 @@ module.exports = {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       name: {
         type: Sequelize.STRING(30),
@@ -19,11 +19,10 @@ module.exports = {
       },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
-
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable('doctors')
+    queryInterface.dropTable("doctors");
   },
 };

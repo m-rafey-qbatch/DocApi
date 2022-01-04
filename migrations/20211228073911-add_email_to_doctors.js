@@ -10,4 +10,3 @@ module.exports = {
     queryInterface.removeColumn("doctors", "email");
   },
 };
-  

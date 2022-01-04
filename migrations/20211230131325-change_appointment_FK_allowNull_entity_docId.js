@@ -9,7 +9,7 @@ module.exports = {
         key: "id",
       },
       onDelete: "CASCADE",
-      allowNull:false,
+      allowNull: false,
     });
   },
 
@@ -21,9 +21,6 @@ module.exports = {
         key: "id",
       },
       onDelete: "CASCADE",
-     
     });
   },
 };
-
-

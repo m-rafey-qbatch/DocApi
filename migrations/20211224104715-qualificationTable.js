@@ -6,28 +6,27 @@ module.exports = {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       qualification: {
         type: Sequelize.STRING(50),
         allowNull: false,
       },
-      doctor_id:{
+      doctor_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'doctors',
-          key: 'id', 
-          allowNull:false
+          model: "doctors",
+          key: "id",
+          allowNull: false,
         },
-        onDelete: 'CASCADE',
+        onDelete: "CASCADE",
       },
-        createdAt: Sequelize.DATE,
+      createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
-
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    queryInterface.dropTable('qualifications')
+    queryInterface.dropTable("qualifications");
   },
 };

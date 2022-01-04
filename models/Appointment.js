@@ -1,54 +1,45 @@
 const { STATUSES } = require("../utils/constants");
 
 module.exports = (sequelize, DataTypes) => {
-  const Appointment = sequelize.define("appointments", {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    date: {
-      type: DataTypes.DATEONLY,
-      required: true,
-    },
-    status: {
-      type: DataTypes.STRING,
-      validate: {
-        isIn: {
-          args: [STATUSES],
-          msg: "Must be a valid type => " + STATUSES,
+  const Appointment = sequelize.define(
+    "appointments",
+    {
+      date: {
+        type: DataTypes.DATEONLY,
+        required: true,
+      },
+      status: {
+        type: DataTypes.STRING,
+        validate: {
+          isIn: {
+            args: [STATUSES],
+            msg: "Must be a valid type => " + STATUSES,
+          },
         },
       },
-    },
-    doctor_id: {
-      type: DataTypes.INTEGER,
-      required: true,
-      references: {
-        model: "doctors",
-        key: "id",
-        allowNull: false,
+      doctor_id: {
+        type: DataTypes.INTEGER,
+        required: true,
+        references: {
+          model: "doctors",
+          key: "id",
+          allowNull: false,
+        },
+        onDelete: "CASCADE",
       },
-      onDelete: "CASCADE",
-    },
-    patient_id: {
-      type: DataTypes.INTEGER,
-      required: true,
-      references: {
-        model: "patients",
-        key: "id",
-        allowNull: false,
+      patient_id: {
+        type: DataTypes.INTEGER,
+        required: true,
+        references: {
+          model: "patients",
+          key: "id",
+          allowNull: false,
+        },
+        onDelete: "CASCADE",
       },
-      onDelete: "CASCADE",
     },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-  });
+    { timestamps: true }
+  );
 
   Appointment.associate = (models) => {
     Appointment.belongsTo(models.doctors, { foreignKey: "doctor_id" });
@@ -64,5 +55,6 @@ module.exports = (sequelize, DataTypes) => {
     }).catch((err) => Promise.reject(err));
     if (result.count >= 5) return Promise.reject(new Error("Slots Fulfilled!"));
   });
+
   return Appointment;
 };

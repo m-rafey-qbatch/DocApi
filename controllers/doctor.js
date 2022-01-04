@@ -24,7 +24,7 @@ exports.updateDoctor = async (req, res) => {
     where: { email: req.body.email },
   });
   if (result) {
-    result.update(req.body);
+    await result.update(req.body);
     res.status(200).send({ success: true, message: "Doctor Updated!" });
   } else {
     db.doctors

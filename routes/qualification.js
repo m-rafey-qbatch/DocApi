@@ -1,5 +1,5 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const qualificationController = require("../controllers/qualification");
 const { validateRequest } = require("../middleware/requestVlidations");
 const { auth } = require("../middleware/authenticate");
@@ -8,34 +8,28 @@ const {
   addQualification,
   updateQualification,
 } = require("../JoiSchemas/Qualification");
+router.use(auth);
+
 router.get(
   "/",
   validateRequest(getQualification, "query"),
-  auth,
   qualificationController.getQualifications
 );
 router.post(
   "/",
   validateRequest(addQualification),
-  auth,
   qualificationController.addQualification
 );
-// router.put(
-//   "/",
-//   validateRequest(addQualification),
-//   qualificationController.putQualifications
-// );
+
 router.put(
   "/",
   validateRequest(updateQualification),
-  auth,
   qualificationController.updateQualification
 );
 
 router.delete(
   "/:id",
   validateRequest(getQualification),
-  auth,
   qualificationController.deleteQualification
 );
 

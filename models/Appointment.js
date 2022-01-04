@@ -1,4 +1,4 @@
-const { STATUSES } = require("../utils/constants");
+const { APPOINTMENT_STATUSES } = require("../utils/constants");
 
 module.exports = (sequelize, DataTypes) => {
   const Appointment = sequelize.define(
@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         validate: {
           isIn: {
-            args: [STATUSES],
-            msg: "Must be a valid type => " + STATUSES,
+            args: [APPOINTMENT_STATUSES],
+            msg: "Must be a valid type => " + APPOINTMENT_STATUSES,
           },
         },
       },

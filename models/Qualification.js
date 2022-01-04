@@ -29,13 +29,13 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Qualification.addHook("beforeCreate", async (qua, options) => {
-    let result = await Qualification.findAndCountAll({
+    let result = await Qualification.count({
       where: {
         qualification: qua.qualification,
         doctor_id: qua.doctor_id,
       },
     }).catch((err) => Promise.reject(err));
-    if (result.count != 0)
+    if (result != 0)
       return Promise.reject(new Error("Qualification Already Exists!"));
   });
 

@@ -47,13 +47,13 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Appointment.addHook("beforeCreate", async (appoint) => {
-    let result = await Appointment.findAndCountAll({
+    let result = await Appointment.count({
       where: {
         doctor_id: appoint.doctor_id,
         date: appoint.date,
       },
     }).catch((err) => Promise.reject(err));
-    if (result.count >= 5) return Promise.reject(new Error("Slots Fulfilled!"));
+    if (result >= 5) return Promise.reject(new Error("Slots Fulfilled!"));
   });
 
   return Appointment;

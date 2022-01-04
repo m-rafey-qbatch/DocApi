@@ -1,62 +1,54 @@
 const db = require("../models/index");
 
 exports.getPatients = async (req, res) => {
-  const { pageLength, page } = req.query;
-  const length = pageLength || 5;
-  const pageNo = page || 0;
-  db.patients
-    .findAndCountAll({
+  try {
+    const { pageLength, page } = req.query;
+    const length = pageLength || 5;
+    const pageNo = page || 1;
+    const response = await db.patients.findAndCountAll({
       limit: length,
       offset: length * (pageNo - 1),
-    })
-    .then((response) => {
-      res.status(200).send({ success: true, patients: response });
-    })
-    .catch((err) => {
-      res.status(400).send({ success: false, message: err.message });
     });
+    await res.status(200).send({ success: true, patients: response });
+  } catch (err) {
+    res.status(400).send({ success: false, message: err.message });
+  }
 };
 
-exports.addPatient = (req, res) => {
-  db.patients
-    .create(req.body)
-    .then(() => {
-      res.status(200).send({ success: true, message: "Patient Added!" });
-    })
-    .catch((err) => {
-      res.status(400).send({ success: false, message: err.message });
-    });
+exports.addPatient = async(req, res) => {
+  try {
+    await db.patients.create(req.body);
+    await res.status(200).send({ success: true, message: "Patient Added!" });
+  } catch (err) {
+    res.status(400).send({ success: false, message: err.message });
+  }
 };
 
 exports.updatePatient = async (req, res) => {
-  let result = await db.patients.findOne({
-    where: { phoneNo: req.body.phoneNo },
-  });
-  if (result) {
-    await result.update(req.body);
-    res.status(200).send({ success: true, message: "Patient Updated!" });
-  } else {
-    db.patients
-      .create(req.body)
-      .then(() => {
-        res.status(200).send({ success: true, message: "Patient Added!" });
-      })
-      .catch((err) => {
-        res.status(400).send({ success: false, message: err.message });
-      });
+  try {
+    const result = await db.patients.findOne({
+      where: { phoneNo: req.body.phoneNo },
+    });
+    if (result) {
+      await result.update(req.body);
+      res.status(200).send({ success: true, message: "Patient Updated!" });
+    } else {
+      await db.patients.create(req.body);
+      await res.status(200).send({ success: true, message: "Patient Added!" });
+    }
+  } catch (err) {
+    res.status(400).send({ success: false, message: err.message });
   }
 };
 
 exports.deletePatient = async (req, res) => {
-  const { patId } = req.params;
-  await db.patients
-    .destroy({
+  try {
+    const { patId } = req.params;
+    await db.patients.destroy({
       where: { id: patId },
-    })
-    .then((response) => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      res.status(400).send({ success: false, message: err.message });
     });
+    await res.sendStatus(200);
+  } catch (err) {
+    res.status(400).send({ success: false, message: err.message });
+  }
 };

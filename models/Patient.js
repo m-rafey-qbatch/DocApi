@@ -48,12 +48,12 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   Patient.addHook("beforeCreate", async (patient) => {
-    let result = await Patient.findAndCountAll({
+    let result = await Patient.count({
       where: {
         phoneNo: patient.phoneNo,
       },
     }).catch((err) => Promise.reject(err));
-    if (result.count != 0)
+    if (result != 0)
       return Promise.reject(new Error("Patient Already Exists!"));
   });
   return Patient;
